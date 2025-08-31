@@ -7,7 +7,6 @@ import CoupleProfileSection from '../components/App/CoupleProfileSection.vue';
 import EventDetailsSection from '../components/App/EventDetailsSection.vue';
 import GallerySection from '../components/App/GallerySection.vue';
 import GiftSection from '../components/App/GiftSection.vue';
-import RSVPSection from '../components/App/RSVPSection.vue';
 import UcapanSection from '../components/App/UcapanSection.vue';
 import SocialShareSection from '../components/App/SocialShareSection.vue';
 import FooterSection from '../components/App/FooterSection.vue';
@@ -245,7 +244,6 @@ defineExpose({
       <EventDetailsSection />
       <GallerySection />
       <GiftSection />
-      <!-- <RSVPSection /> -->
       <UcapanSection />
       <SocialShareSection />
       <FooterSection />

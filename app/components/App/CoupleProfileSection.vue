@@ -1,29 +1,5 @@
 <template>
-  <section class="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-black flex items-center justify-center">
-    <!-- Floating Bubbles Background -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none z-10">
-      <div
-        v-for="(bubble, index) in bubbles"
-        :key="'bubble-' + index"
-        class="bubble absolute rounded-full"
-        :style="bubble.style"
-      ></div>
-    </div>
-
-    <!-- Corner Decorations -->
-    <div class="absolute top-8 left-8 z-20 corner-decoration fade-in-corner-tl">
-      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-20 h-20 opacity-60" />
-    </div>
-    <div class="absolute top-8 right-8 z-20 corner-decoration fade-in-corner-tr">
-      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-20 h-20 opacity-60 transform scaleX(-1) -rotate-90" />
-    </div>
-    <div class="absolute bottom-8 left-8 z-20 corner-decoration fade-in-corner-bl">
-      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-20 h-20 opacity-60 transform rotate-270" />
-    </div>
-    <div class="absolute bottom-8 right-8 z-20 corner-decoration fade-in-corner-br">
-      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-20 h-20 opacity-60 transform rotate-180 scaleX(-1)" />
-    </div>
-
+  <section class="min-h-screen relative overflow-hidden flex items-center justify-center">
     <!-- Main Content -->
     <div class="relative z-30 w-full px-6 py-16">
       <!-- Section Title -->
@@ -95,28 +71,6 @@
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-
-// Bubble animation state (same as QuotesSection)
-const bubbles = ref(Array.from({ length: 12 }, () => {
-  const size = Math.random() * 3 + 2; // 2-5px
-  const delay = Math.random() * 8;
-  const duration = Math.random() * 4 + 6;
-  const leftPosition = Math.random() * 100;
-  const drift = (Math.random() - 0.5) * 200;
-  return {
-    style: {
-      left: leftPosition + '%',
-      bottom: '-30px',
-      width: size + 'px',
-      height: size + 'px',
-      fontSize: size + 'px',
-      color: `hsl(${Math.random() * 60 + 300}, 70%, 80%)`,
-      animationDelay: delay + 's',
-      animationDuration: duration + 's',
-      '--drift-x': drift + 'px',
-    }
-  }
-}))
 </script>
 
 <style scoped>
@@ -125,133 +79,9 @@ const bubbles = ref(Array.from({ length: 12 }, () => {
   .gradient-text {
     font-size: 1.875rem !important;
   }
-  .corner-decoration img {
-    width: 3rem !important;
-    height: 3rem !important;
-  }
-  
-  /* Maintain rotation and scaling for each corner on small mobile */
-  .fade-in-corner-tr img {
-    transform: scaleX(-1) !important;
-  }
-  
-  .fade-in-corner-bl img {
-    transform: rotate(90deg) !important;
-  }
-  
-  .fade-in-corner-br img {
-    transform: rotate(90deg) scaleX(-1) !important;
-  }
 }
 
-/* Bubble Animation */
-.bubble {
-  animation: bubble-rise var(--animation-duration, 8s) ease-in-out infinite;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 70%, transparent 100%);
-  border: 1px solid rgba(255,255,255,0.2);
-  backdrop-filter: blur(2px);
-  text-shadow: 0 0 10px currentColor;
-}
-
-@keyframes bubble-rise {
-  0% {
-    transform: translateY(0) translateX(0) scale(0.5) rotate(0deg);
-    opacity: 0;
-  }
-  5% {
-    opacity: 0.6;
-    transform: translateY(-5vh) translateX(calc(var(--drift-x) * 0.1)) scale(0.7) rotate(18deg);
-  }
-  25% {
-    opacity: 0.8;
-    transform: translateY(-25vh) translateX(calc(var(--drift-x) * 0.3)) scale(1) rotate(90deg);
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(-50vh) translateX(calc(var(--drift-x) * 0.6)) scale(1.1) rotate(180deg);
-  }
-  75% {
-    opacity: 0.7;
-    transform: translateY(-75vh) translateX(calc(var(--drift-x) * 0.8)) scale(0.9) rotate(270deg);
-  }
-  95% {
-    opacity: 0.3;
-    transform: translateY(-95vh) translateX(var(--drift-x)) scale(0.6) rotate(340deg);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-110vh) translateX(var(--drift-x)) scale(0.3) rotate(360deg);
-  }
-}
-
-/* Corner animations */
-.fade-in-corner-tl {
-  animation: fadeInCornerTL 1.5s ease-out forwards;
-  opacity: 0;
-}
-
-.fade-in-corner-tr {
-  animation: fadeInCornerTR 1.5s ease-out 0.3s forwards;
-  opacity: 0;
-}
-
-.fade-in-corner-bl {
-  animation: fadeInCornerBL 1.5s ease-out 0.6s forwards;
-  opacity: 0;
-}
-
-.fade-in-corner-br {
-  animation: fadeInCornerBR 1.5s ease-out 0.9s forwards;
-  opacity: 0;
-}
-
-@keyframes fadeInCornerTL {
-  from {
-    opacity: 0;
-    transform: translateX(-20px) translateY(-20px) rotate(-10deg);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0) translateY(0) rotate(0deg);
-  }
-}
-
-@keyframes fadeInCornerTR {
-  from {
-    opacity: 0;
-    transform: translateX(20px) translateY(-20px) rotate(10deg) scaleX(-1);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0) translateY(0) rotate(0deg) scaleX(-1);
-  }
-}
-
-@keyframes fadeInCornerBL {
-  from {
-    opacity: 0;
-    transform: translateX(-20px) translateY(20px) rotate(190deg);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0) translateY(0) rotate(180deg);
-  }
-}
-
-@keyframes fadeInCornerBR {
-  from {
-    opacity: 0;
-    transform: translateX(20px) translateY(20px) rotate(170deg) scaleX(-1);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0) translateY(0) rotate(180deg) scaleX(-1);
-  }
-}
-
+/* Text styling */
 .gradient-text {
   background: linear-gradient(45deg, #ffffff, #f8fafc, #e2e8f0);
   -webkit-background-clip: text;
@@ -269,6 +99,7 @@ const bubbles = ref(Array.from({ length: 12 }, () => {
   50% { transform: scale(1.1); }
 }
 
+/* Animation utilities */
 .fade-in-up {
   animation: fadeInUp 1s ease-out forwards;
 }
@@ -333,53 +164,6 @@ const bubbles = ref(Array.from({ length: 12 }, () => {
   to {
     opacity: 1;
     transform: translateX(0);
-  }
-}
-
-/* Corner decoration hover effects */
-.corner-decoration {
-  transition: all 0.4s ease;
-}
-
-.corner-decoration:hover {
-  transform: scale(1.1);
-  filter: brightness(1.2);
-}
-
-.corner-decoration:hover img {
-  animation: gentle-glow 2s ease-in-out infinite;
-}
-
-@keyframes gentle-glow {
-  0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3)); }
-  50% { filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.5)); }
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .corner-decoration {
-    top: 1rem !important;
-    bottom: 1rem !important;
-    left: 1rem !important;
-    right: 1rem !important;
-  }
-  
-  .corner-decoration img {
-    width: 3rem !important;
-    height: 3rem !important;
-  }
-  
-  /* Maintain rotation and scaling for each corner on mobile */
-  .fade-in-corner-tr img {
-    transform: scaleX(-1) !important;
-  }
-  
-  .fade-in-corner-bl img {
-    transform: rotate(90deg) !important;
-  }
-  
-  .fade-in-corner-br img {
-    transform: rotate(90deg) scaleX(-1) !important;
   }
 }
 
