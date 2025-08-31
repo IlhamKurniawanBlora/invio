@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed top-6 left-1/2 transform -translate-x-1/2 z-[60] transition-all duration-300">
+  <div class="fixed top-2 left-1/2 transform -translate-x-1/2 z-[60] transition-all duration-300">
     <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-6 py-3 flex items-center space-x-4 shadow-lg">
       <!-- Music Control Button -->
       <button

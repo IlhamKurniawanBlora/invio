@@ -203,7 +203,7 @@ onMounted(() => {
   setTimeout(() => {
     loading.value = false;
     showWelcome.value = true;
-  }, 3000);
+  }, 6000);
 });
 
 onUnmounted(() => {

@@ -203,24 +203,6 @@ const handleEnterInvitation = () => {
   border: 1px solid #cbd5e1;
   background: radial-gradient(circle, rgba(100,116,139,0.08) 0%, rgba(203,213,225,0.05) 70%, transparent 100%);
 }
-/* Google Fonts - Add to nuxt.config.ts or app.vue */
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Playfair+Display:wght@300;400;700&family=Poppins:wght@300;400;500;600&display=swap');
-
-.font-great-vibes {
-  font-family: 'Great Vibes', cursive;
-}
-
-.font-dancing {
-  font-family: 'Dancing Script', cursive;
-}
-
-.font-playfair {
-  font-family: 'Playfair Display', serif;
-}
-
-.font-poppins {
-  font-family: 'Poppins', sans-serif;
-}
 
 /* Animations */
 

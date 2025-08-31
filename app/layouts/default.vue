@@ -62,8 +62,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes:wght@400&family=Dancing+Script:wght@400;600&display=swap');
-
 .font-dancing {
   font-family: 'Dancing Script', cursive;
 }
