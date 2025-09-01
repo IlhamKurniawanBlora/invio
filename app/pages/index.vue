@@ -205,7 +205,7 @@ const startAutoScroll = () => {
   const scrollStep = () => {
     if (!isAutoScrolling.value) return;
     
-    const scrollSpeed = 1; // pixels per frame
+    const scrollSpeed = 3; // pixels per frame (increased from 1)
     const currentScroll = window.pageYOffset;
     const targetScroll = currentScroll + scrollSpeed;
     

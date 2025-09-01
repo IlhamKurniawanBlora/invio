@@ -42,7 +42,7 @@
                 </div>
                 <div class="flex items-center justify-center">
                   <Icon name="lucide:map-pin" class="w-4 h-4 mr-2 text-amber-600" />
-                  <span>Wonten griyanipun penganten putri</span>
+                  <span>Wonten griyanipun penganten putra</span>
                 </div>
               </div>
             </div>
@@ -114,7 +114,7 @@ const shareMessage = `🕌 Serat Pawiwahan 🕌
 Jiyanto & Nur Aini
 📅 Tanggal: 07 Desember 2025
 🕰️ Wektu: 07:00 WIB
-📍 Wonten griyanipun penganten putri
+📍 Wonten griyanipun penganten putra
 
 Kanthi rasa bekti lan pangabekti, kula nyuwun pangapunten menawi wonten kalepatan. Mugi-mugi panjenengan kersa rawuh wonten ing adicara pawiwahan punika kangge maringi berkah lan pangestu dhumateng kekalih penganten.
 

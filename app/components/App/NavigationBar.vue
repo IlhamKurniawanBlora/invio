@@ -39,17 +39,14 @@
         </svg>
       </button>
 
-      <!-- Theme Toggle Button -->
+      <!-- Scroll to Top Button -->
       <button
-        @click="toggleTheme"
+        @click="scrollToTop"
         class="p-2 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all duration-300"
-        :title="isDark ? 'Switch to Light Theme' : 'Switch to Dark Theme'"
+        title="Scroll to Top"
       >
-        <svg v-if="isDark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-        </svg>
-        <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
         </svg>
       </button>
     </div>
@@ -69,9 +66,6 @@ const props = defineProps<{
   startAutoScroll?: () => void;
 }>()
 
-// Theme state
-const isDark = ref(true)
-
 // Auto scroll toggle function
 const handleAutoScrollToggle = () => {
   if (props.isAutoScrolling) {
@@ -81,58 +75,22 @@ const handleAutoScrollToggle = () => {
   }
 }
 
-// Theme toggle function
-const toggleTheme = () => {
-  isDark.value = !isDark.value
-  // Apply theme to document
-  if (typeof document !== 'undefined') {
-    if (isDark.value) {
-      document.documentElement.classList.remove('light-theme')
-      document.documentElement.classList.add('dark-theme')
-    } else {
-      document.documentElement.classList.remove('dark-theme')
-      document.documentElement.classList.add('light-theme')
-    }
-    // Persist theme to localStorage
-    localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
+// Scroll to top function
+const scrollToTop = () => {
+  if (typeof window !== 'undefined') {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
   }
 }
 
-onMounted(() => {
-  // Load theme from localStorage if available
-  if (typeof window !== 'undefined') {
-    const saved = window.localStorage.getItem('theme')
-    if (saved === 'light') {
-      isDark.value = false
-      document.documentElement.classList.add('light-theme')
-    } else {
-      isDark.value = true
-      document.documentElement.classList.add('dark-theme')
-    }
-  }
-})
-
 onUnmounted(() => {
   // Cleanup
-  stopAutoScroll()
+  props.stopAutoScroll?.()
 })
 </script>
 
 <style scoped>
-/* Light theme button overrides */
-:global(.light-theme) .bg-white\/10 {
-  background: rgba(45, 55, 72, 0.1) !important;
-}
-
-:global(.light-theme) .border-white\/20 {
-  border-color: rgba(45, 55, 72, 0.2) !important;
-}
-
-:global(.light-theme) .text-white {
-  color: #2d3748 !important;
-}
-
-:global(.light-theme) .hover\:bg-white\/20:hover {
-  background: rgba(45, 55, 72, 0.2) !important;
-}
+/* Navigation bar styles */
 </style>

@@ -1,17 +1,17 @@
 <template>
   <section id="couple" class="min-h-screen relative overflow-hidden flex items-center justify-center">
     <!-- Angel Decorations -->
-    <div class="absolute top-10 left-10 z-20 opacity-20 animate-float scroll-animate-fade-left" ref="angelTopLeftRef">
-      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-24 h-24 md:w-32 md:h-32" />
+    <div class="absolute top-4 left-2 md:top-10 md:left-10 z-20 opacity-20 animate-float scroll-animate-fade-left" ref="angelTopLeftRef">
+      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-12 h-12 md:w-32 md:h-32" />
     </div>
-    <div class="absolute top-10 right-10 z-20 opacity-20 animate-float-reverse scroll-animate-fade-right" ref="angelTopRightRef">
-      <img src="/assets/images/angeldecor.png" alt="Decorative Angel" class="w-20 h-20 md:w-28 md:h-28 rotate-90" />
+    <div class="absolute top-4 right-2 md:top-10 md:right-10 z-20 opacity-20 animate-float-reverse scroll-animate-fade-right" ref="angelTopRightRef">
+      <img src="/assets/images/angeldecor.png" alt="Decorative Angel" class="w-10 h-10 md:w-28 md:h-28 rotate-90" />
     </div>
-    <div class="absolute bottom-10 left-10 z-20 opacity-15 animate-float-slow scroll-animate-fade-left scroll-animate-delay-3" ref="angelBottomLeftRef">
-      <img src="/assets/images/angeldecor.png" alt="Decorative Angel" class="w-16 h-16 md:w-24 md:h-24 transform scale-x-[-1] rotate-180" />
+    <div class="absolute bottom-4 left-2 md:bottom-10 md:left-10 z-20 opacity-15 animate-float-slow scroll-animate-fade-left scroll-animate-delay-3" ref="angelBottomLeftRef">
+      <img src="/assets/images/angeldecor.png" alt="Decorative Angel" class="w-8 h-8 md:w-24 md:h-24 transform scale-x-[-1] rotate-180" />
     </div>
-    <div class="absolute bottom-10 right-10 z-20 opacity-15 animate-float-slow-reverse scroll-animate-fade-right scroll-animate-delay-3" ref="angelBottomRightRef">
-      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-20 h-20 md:w-28 md:h-28 transform scale-x-[-1] rotate-90" />
+    <div class="absolute bottom-4 right-2 md:bottom-5 md:right-10 z-20 opacity-15 animate-float-slow-reverse scroll-animate-fade-right scroll-animate-delay-3" ref="angelBottomRightRef">
+      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-10 h-10 md:w-28 md:h-28 transform scale-x-[-1] rotate-90" />
     </div>
 
     <!-- Main Content -->
@@ -142,6 +142,19 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* Mobile-specific adjustments for angel decorations */
+@media (max-width: 768px) {
+  .absolute.top-4.left-2,
+  .absolute.top-4.right-2 {
+    opacity: 0.5 !important;
+  }
+  
+  .absolute.bottom-4.left-2,
+  .absolute.bottom-4.right-2 {
+    opacity: 0.2 !important;
+  }
+}
+
 /* Responsive improvements for mobile */
 @media (max-width: 640px) {
   .gradient-text {
