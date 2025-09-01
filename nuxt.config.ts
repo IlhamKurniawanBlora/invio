@@ -47,7 +47,7 @@ export default defineNuxtConfig({
         },
         {
           property: 'og:image',
-          content: '/og-image.png', // fallback kalau auto-generate belum dipakai
+          content: 'https://jiyanto-nuraini-weeding-invitation.netlify.app/og-image.png', // fallback kalau auto-generate belum dipakai
         },
       ],
     },

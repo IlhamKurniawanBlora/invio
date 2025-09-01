@@ -25,6 +25,15 @@ const isPlaying = ref(false);
 const audioPlayer = ref<HTMLAudioElement | null>(null);
 const isAudioInitialized = ref(false);
 
+useSeoMeta({
+  title: 'Wedding Jiyanto & Nur Aini',
+  ogTitle: 'Wedding Jiyanto & Nur Aini',
+  description: 'Dengan penuh rasa syukur, kami mengundang Anda untuk menghadiri pernikahan kami.',
+  ogDescription: 'Dengan penuh rasa syukur, kami mengundang Anda untuk menghadiri pernikahan kami.',
+  ogImage: 'https://jiyanto-nuraini-weeding-invitation.netlify.app/og-image.png',
+  twitterCard: 'summary_large_image',
+})
+
 // Shared music control functions
 const initializeAudio = () => {
   if (!audioPlayer.value && !isAudioInitialized.value) {
