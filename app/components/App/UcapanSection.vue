@@ -1,30 +1,34 @@
 <template>
-  <section class="py-16 text-center" ref="sectionRef">
+  <section id="ucapan" class="py-16 text-center" ref="sectionRef">
     <div class="max-w-4xl mx-auto px-6">
-      <div class="ucapan-content" :class="{ 'animate-in': isVisible }">
+      <div class="ucapan-content">
         <!-- Title -->
-        <div class="mb-8">
-          <h2 class="font-great-vibes text-3xl md:text-4xl font-normal mb-3 text-gray-800">
+        <div class="mb-8 scroll-animate-fade-up" ref="titleRef">
+          <h1 class="gradient-text font-great-vibes text-5xl md:text-6xl lg:text-7xl font-normal leading-tight">
             Ucapan & Doa
-          </h2>
-          <p class="text-gray-600 italic">
+          </h1>
+          <h2 class="font-dancing text-2xl md:text-3xl lg:text-4xl font-bold mt-4 text-white/90 tracking-wide">
             "Doa terbaik dari hati tulus untuk kedua mempelai"
-          </p>
+          </h2>
         </div>
 
-        <!-- Prayer Content -->
-        <div class="prayer-card max-w-2xl mx-auto mb-8">
+        <!-- Prayer Content with paper-like design -->
+        <div class="prayer-card max-w-2xl mx-auto mb-8 scroll-animate-scale scroll-animate-delay-1" ref="prayerCardRef">
           <blockquote class="text-lg text-gray-700 leading-relaxed italic mb-4 arabic-text">
             "رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا"
           </blockquote>
+          
+          <div class="paper-divider"></div>
           
           <p class="text-gray-600 mb-6">
             "Ya Tuhan kami, anugerahkanlah kepada kami pasangan hidup dan keturunan yang menyejukkan mata, 
             dan jadikanlah kami sebagai imam (pemimpin yang baik) bagi orang-orang yang bertakwa."
           </p>
           
-          <div class="text-left space-y-4">
-            <div class="doa-item">
+          <div class="paper-divider"></div>
+          
+          <div class="text-left space-y-6">
+            <div class="doa-item scroll-animate-fade-left scroll-animate-delay-2">
               <h4 class="font-semibold text-amber-700 mb-1">
                 <i class="fas fa-heart text-pink-500 mr-2"></i>
                 Sakinah (Ketenangan)
@@ -34,7 +38,9 @@
               </p>
             </div>
             
-            <div class="doa-item">
+            <div class="paper-divider-small"></div>
+            
+            <div class="doa-item scroll-animate-fade-right scroll-animate-delay-3">
               <h4 class="font-semibold text-amber-700 mb-1">
                 <i class="fas fa-heart text-pink-500 mr-2"></i>
                 Mawaddah (Cinta Kasih)
@@ -43,6 +49,8 @@
                 Semoga cinta kasih di antara kalian selalu tumbuh dan menguat.
               </p>
             </div>
+            
+            <div class="paper-divider-small"></div>
             
             <div class="doa-item">
               <h4 class="font-semibold text-amber-700 mb-1">
@@ -62,23 +70,16 @@
             Kirimkan Ucapan & Doa Anda
           </h3>
           
-          <div class="flex flex-col sm:flex-row gap-3 justify-center">
-            <a 
-              href="https://wa.me/6285643021070?text=Assalamualaikum%2C%20selamat%20menempuh%20hidup%20baru%20untuk%20Jiyanto%20%26%20Nur%20Aini.%20Semoga%20keluarga%20yang%20sakinah%2C%20mawaddah%2C%20warahmah%20%F0%9F%A4%B2%F0%9F%8E%89"
+          <div class="flex justify-center">
+            <a
+              href="https://api.whatsapp.com/send/?phone=6285887306450&text=Assalamualaikum+Warahmatullahi+Wabarakatuh%2C+Selamat+menempuh+hidup+baru+untuk+Jiyanto+%26+Nur+Aini.+Semoga+menjadi+keluarga+yang+sakinah%2C+mawaddah%2C+warahmah.+%F0%9F%A4%B2%F0%9F%8E%89&type=phone_number&app_absent=0"
               target="_blank"
-              class="contact-btn whatsapp-btn"
+              class="flex items-center px-4 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition"
             >
-              <i class="fab fa-whatsapp mr-2"></i>
-              Kirim via WhatsApp
+              <Icon name="logos:whatsapp-icon" class="w-5 h-5 mr-2" />
+              Kirim Ucapan
             </a>
-            
-            <a 
-              href="mailto:example@email.com?subject=Ucapan%20Pernikahan&body=Assalamualaikum%2C%20selamat%20menempuh%20hidup%20baru%20untuk%20Jiyanto%20%26%20Nur%20Aini."
-              class="contact-btn email-btn"
-            >
-              <i class="fas fa-envelope mr-2"></i>
-              Kirim via Email
-            </a>
+
           </div>
         </div>
       </div>
@@ -87,56 +88,118 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { useScrollAnimation } from '~/composables/useScrollAnimation'
+
+// Scroll animation setup
+const { observe, unobserve } = useScrollAnimation({
+  threshold: 0.1,
+  rootMargin: '0px 0px -100px 0px',
+  once: true,
+  stagger: 200
+})
 
 // Refs
 const sectionRef = ref<HTMLElement>()
-const isVisible = ref(false)
+const titleRef = ref<HTMLElement>()
+const prayerCardRef = ref<HTMLElement>()
 
-// Intersection Observer for scroll animations
-let observer: IntersectionObserver
-
+// Lifecycle
 onMounted(() => {
-  observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.target === sectionRef.value) {
-          isVisible.value = entry.isIntersecting
-        }
-      })
-    },
-    {
-      threshold: 0.3,
-      rootMargin: '-50px'
-    }
-  )
-
-  if (sectionRef.value) {
-    observer.observe(sectionRef.value)
-  }
+  // Setup scroll animations
+  nextTick(() => {
+    if (titleRef.value) observe(titleRef.value)
+    if (prayerCardRef.value) observe(prayerCardRef.value)
+    
+    // Also observe doa items
+    const doaItems = document.querySelectorAll('#ucapan .doa-item')
+    doaItems.forEach(item => observe(item as Element))
+  })
 })
 
 onUnmounted(() => {
-  if (observer && sectionRef.value) {
-    observer.unobserve(sectionRef.value)
+  // Cleanup animations if needed
+  if (sectionRef.value) {
+    unobserve(sectionRef.value)
   }
 })
 </script>
 
 <style scoped>
+/* Responsive improvements for mobile */
+@media (max-width: 640px) {
+  .gradient-text {
+    font-size: 2.5rem !important;
+  }
+  .font-dancing {
+    font-size: 1.5rem !important;
+  }
+}
+
+/* Text styling */
+.gradient-text {
+  background: linear-gradient(45deg, #ffffff, #f8fafc, #e2e8f0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
 /* Prayer Card */
 .prayer-card {
-  background: white;
+  background: linear-gradient(135deg, #fefefe 0%, #faf8f6 100%);
   border-radius: 12px;
   padding: 2rem;
   border: 1px solid #e5e7eb;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
   transition: all 0.3s ease;
+  position: relative;
 }
 
 .prayer-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+  box-shadow: 
+    0 10px 25px -3px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Paper dividers */
+.paper-divider {
+  height: 1px;
+  background: repeating-linear-gradient(
+    to right,
+    #d1d5db 0px,
+    #d1d5db 10px,
+    transparent 10px,
+    transparent 15px
+  );
+  margin: 1.5rem 0;
+  position: relative;
+}
+
+.paper-divider::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, transparent, #e5e7eb 20%, #e5e7eb 80%, transparent);
+}
+
+.paper-divider-small {
+  height: 1px;
+  background: repeating-linear-gradient(
+    to right,
+    #e5e7eb 0px,
+    #e5e7eb 5px,
+    transparent 5px,
+    transparent 10px
+  );
+  margin: 1rem 0;
+  opacity: 0.6;
 }
 
 /* Contact Section */
@@ -151,7 +214,7 @@ onUnmounted(() => {
 .contact-btn {
   display: inline-flex;
   align-items: center;
-  padding: 0.75rem 1.5rem;
+  padding: 0.875rem 1.75rem;
   border-radius: 8px;
   font-weight: 500;
   text-decoration: none;
@@ -162,11 +225,13 @@ onUnmounted(() => {
 .whatsapp-btn {
   background: linear-gradient(45deg, #25d366, #128c7e);
   color: white;
+  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
 }
 
 .whatsapp-btn:hover {
   background: linear-gradient(45deg, #128c7e, #075e54);
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
 }
 
 .email-btn {

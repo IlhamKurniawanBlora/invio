@@ -13,6 +13,9 @@
     <div class="relative z-30">
       <slot />
     </div>
+    
+    <!-- Toast Notifications (Global) -->
+    <ToastNotif />
   </div>
 </template>
 
@@ -20,6 +23,7 @@
 import AnimatedBackground from '~/components/App/AnimatedBackground.vue'
 import AnimatedBubbles from '~/components/App/AnimatedBubbles.vue'
 import CornerDecorations from '~/components/App/CornerDecorations.vue'
+import ToastNotif from '~/components/App/ToastNotif.vue'
 
 // Props
 interface Props {

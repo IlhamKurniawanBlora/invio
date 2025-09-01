@@ -18,6 +18,7 @@ import audioFile from '~/assets/music/NikenSalindry-SangGuruSejati.mp3';
 import { ref, onMounted, onUnmounted } from 'vue';
 const loading = ref(true);
 const showWelcome = ref(false);
+const isAutoScrolling = ref(false);
 
 // Shared music state
 const isPlaying = ref(false);
@@ -193,6 +194,59 @@ const cleanupAudio = () => {
   isPlaying.value = false;
 };
 
+// Auto scroll functionality
+const startAutoScroll = () => {
+  if (isAutoScrolling.value) return;
+  
+  isAutoScrolling.value = true;
+  document.documentElement.classList.add('auto-scrolling');
+  
+  // Start smooth auto scroll
+  const scrollStep = () => {
+    if (!isAutoScrolling.value) return;
+    
+    const scrollSpeed = 1; // pixels per frame
+    const currentScroll = window.pageYOffset;
+    const targetScroll = currentScroll + scrollSpeed;
+    
+    window.scrollTo({
+      top: targetScroll,
+      behavior: 'auto' // Use auto for smooth continuous scroll
+    });
+    
+    // Continue scrolling if not at bottom
+    if (currentScroll < document.documentElement.scrollHeight - window.innerHeight) {
+      requestAnimationFrame(scrollStep);
+    } else {
+      stopAutoScroll();
+    }
+  };
+  
+  requestAnimationFrame(scrollStep);
+};
+
+const stopAutoScroll = () => {
+  isAutoScrolling.value = false;
+  document.documentElement.classList.remove('auto-scrolling');
+};
+
+// Enhanced smooth scroll to section
+const scrollToSection = (sectionId: string) => {
+  stopAutoScroll(); // Stop auto scroll when user manually navigates
+  
+  const element = document.getElementById(sectionId);
+  if (element) {
+    const headerOffset = 80; // Account for navigation bar
+    const elementPosition = element.offsetTop;
+    const offsetPosition = elementPosition - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+  }
+};
+
 onMounted(() => {
   // Initialize audio early
   setTimeout(() => {
@@ -203,6 +257,27 @@ onMounted(() => {
     loading.value = false;
     showWelcome.value = true;
   }, 6000);
+  
+  // Add scroll event listener to stop auto scroll on manual interaction
+  let scrollTimeout: NodeJS.Timeout;
+  const handleManualScroll = () => {
+    if (isAutoScrolling.value) {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        // Only stop if user is actively scrolling
+        stopAutoScroll();
+      }, 150);
+    }
+  };
+  
+  // Add wheel and touch events to detect manual scrolling
+  window.addEventListener('wheel', handleManualScroll, { passive: true });
+  window.addEventListener('touchmove', handleManualScroll, { passive: true });
+  window.addEventListener('keydown', (e) => {
+    if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(e.key)) {
+      stopAutoScroll();
+    }
+  });
 });
 
 onUnmounted(() => {
@@ -213,13 +288,21 @@ const handleEnterInvitation = async () => {
   console.log('Entering invitation, starting music...');
   await startMusic();
   showWelcome.value = false;
+  
+  // Start auto scroll after a short delay
+  setTimeout(() => {
+    startAutoScroll();
+  }, 1000);
 };
 
 // Expose functions to template if needed
 defineExpose({
   startMusic,
   toggleMusic,
-  isPlaying
+  isPlaying,
+  startAutoScroll,
+  stopAutoScroll,
+  scrollToSection
 });
 </script>
 
@@ -237,16 +320,20 @@ defineExpose({
       v-if="!loading && !showWelcome" 
       :isPlaying="isPlaying"
       :toggleMusic="toggleMusic"
+      :scrollToSection="scrollToSection"
+      :isAutoScrolling="isAutoScrolling"
+      :stopAutoScroll="stopAutoScroll"
+      :startAutoScroll="startAutoScroll"
     />
     <div v-if="!loading && !showWelcome">
-      <QuotesSection />
-      <CoupleProfileSection />
-      <EventDetailsSection />
-      <GallerySection />
-      <GiftSection />
-      <UcapanSection />
-      <SocialShareSection />
-      <FooterSection />
+      <QuotesSection id="quotes" />
+      <CoupleProfileSection id="couple" />
+      <EventDetailsSection id="event" />
+      <GallerySection id="gallery" />
+      <GiftSection id="gift" />
+      <UcapanSection id="ucapan" />
+      <SocialShareSection id="social" />
+      <FooterSection id="footer" />
     </div>
   </NuxtLayout>
 </template>

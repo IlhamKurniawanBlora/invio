@@ -4,12 +4,12 @@
       <div class="share-content" :class="{ 'animate-in': isVisible }">
         <!-- Title -->
         <div class="mb-8">
-          <h2 class="font-great-vibes text-3xl md:text-4xl font-normal mb-3 text-gray-800">
+          <h1 class="gradient-text font-great-vibes text-5xl md:text-6xl lg:text-7xl font-normal leading-tight">
             Bagikan Kebahagiaan
-          </h2>
-          <p class="text-gray-600 italic">
+          </h1>
+          <h2 class="font-dancing text-2xl md:text-3xl lg:text-4xl font-bold mt-4 text-white/90 tracking-wide">
             "Berbagi momen indah bersama orang-orang tercinta"
-          </p>
+          </h2>
         </div>
 
         <!-- Share Message Preview -->
@@ -18,65 +18,78 @@
             Pesan yang akan dibagikan:
           </h3>
           <div class="message-card">
-            <p class="text-gray-700 leading-relaxed text-sm">
-              🎉 <strong>Undangan Pernikahan</strong> 🎉
-              <br /><br />
-              Jiyanto & Nur Aini
-              <br />
-              📅 07 Desember 2025
-              <br />
-              🕰️ 07:00 WIB
-              <br /><br />
-              Kami dengan hormat mengundang Anda untuk hadir dalam momen bahagia kami ✨
-              <br /><br />
-              🔗 {{ invitationUrl }}
-            </p>
+            <div class="text-center mb-4">
+              <div class="flex items-center justify-center mb-2">
+                <Icon name="lucide:mosque" class="w-6 h-6 text-amber-700 mr-2" />
+                <strong class="text-lg text-amber-700">Serat Pawiwahan</strong>
+                <Icon name="lucide:mosque" class="w-6 h-6 text-amber-700 ml-2" />
+              </div>
+            </div>
+            
+            <div class="paper-divider"></div>
+            
+            <div class="text-center mb-4">
+              <h3 class="text-xl font-semibold text-gray-700 mb-3">Jiyanto & Nur Aini</h3>
+              
+              <div class="space-y-2 text-gray-600">
+                <div class="flex items-center justify-center">
+                  <Icon name="lucide:calendar" class="w-4 h-4 mr-2 text-amber-600" />
+                  <span>Tanggal: 07 Desember 2025</span>
+                </div>
+                <div class="flex items-center justify-center">
+                  <Icon name="lucide:clock" class="w-4 h-4 mr-2 text-amber-600" />
+                  <span>Wektu: 07:00 WIB</span>
+                </div>
+                <div class="flex items-center justify-center">
+                  <Icon name="lucide:map-pin" class="w-4 h-4 mr-2 text-amber-600" />
+                  <span>Wonten griyanipun penganten putri</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="paper-divider"></div>
+            
+            <div class="text-gray-600 leading-relaxed text-sm text-justify mb-4">
+              Kanthi rasa bekti lan pangabekti, kula nyuwun pangapunten menawi wonten kalepatan. 
+              Mugi-mugi panjenengan kersa rawuh wonten ing adicara pawiwahan punika kangge maringi 
+              berkah lan pangestu dhumateng kekalih penganten.
+            </div>
+            
+            <div class="paper-divider-small"></div>
+            
+            <div class="text-center">
+              <div class="flex items-center justify-center mb-2">
+                <Icon name="lucide:heart-handshake" class="w-4 h-4 mr-2 text-pink-500" />
+                <span class="text-gray-600 text-sm">Matur nuwun sanget</span>
+              </div>
+              <div class="flex items-center justify-center text-blue-600">
+                <Icon name="lucide:link" class="w-4 h-4 mr-2" />
+                <span class="text-sm">{{ invitationUrl }}</span>
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- Social Share Buttons -->
-        <div class="share-buttons">
-          <h3 class="font-semibold text-lg mb-6 text-gray-800">
-            Pilih Platform untuk Berbagi:
-          </h3>
+        <div class="share-buttons mt-4">
           
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-lg mx-auto mb-6">
+          <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto mb-6 justify-center">
             <!-- WhatsApp -->
             <button 
               @click="shareToWhatsApp"
               class="share-btn whatsapp-btn"
             >
-              <i class="fab fa-whatsapp text-2xl mb-2"></i>
-              <span class="font-semibold">WhatsApp</span>
+              <Icon name="logos:whatsapp-icon" class="w-8 h-8" />
             </button>
 
-            <!-- Instagram -->
+            <!-- Copy Link Button -->
             <button 
-              @click="shareToInstagram"
-              class="share-btn instagram-btn"
+              @click="copyLink"
+              class="share-btn copy-btn"
             >
-              <i class="fab fa-instagram text-2xl mb-2"></i>
-              <span class="font-semibold">Instagram</span>
-            </button>
-
-            <!-- Facebook -->
-            <button 
-              @click="shareToFacebook"
-              class="share-btn facebook-btn"
-            >
-              <i class="fab fa-facebook text-2xl mb-2"></i>
-              <span class="font-semibold">Facebook</span>
+              <Icon name="lucide:link" class="w-8 h-8" />
             </button>
           </div>
-
-          <!-- Copy Link Button -->
-          <button 
-            @click="copyLink"
-            class="copy-link-btn"
-          >
-            <i class="fas fa-link mr-2"></i>
-            Salin Link Undangan
-          </button>
         </div>
       </div>
     </div>
@@ -85,20 +98,27 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useToastApp } from '~/composables/useToastApp'
 
 // Refs
 const sectionRef = ref<HTMLElement>()
 const isVisible = ref(false)
 
+// Toast composable
+const { success, error } = useToastApp()
+
 // Data
 const invitationUrl = 'https://jiyanto-nuraini-weeding-invitation.netlify.app/'
-const shareMessage = `🎉 Undangan Pernikahan 🎉
+const shareMessage = `🕌 Serat Pawiwahan 🕌
 
 Jiyanto & Nur Aini
-📅 07 Desember 2025
-🕰️ 07:00 WIB
+📅 Tanggal: 07 Desember 2025
+🕰️ Wektu: 07:00 WIB
+📍 Wonten griyanipun penganten putri
 
-Kami dengan hormat mengundang Anda untuk hadir dalam momen bahagia kami ✨
+Kanthi rasa bekti lan pangabekti, kula nyuwun pangapunten menawi wonten kalepatan. Mugi-mugi panjenengan kersa rawuh wonten ing adicara pawiwahan punika kangge maringi berkah lan pangestu dhumateng kekalih penganten.
+
+Matur nuwun sanget
 
 ${invitationUrl}`
 
@@ -108,31 +128,13 @@ const shareToWhatsApp = () => {
   window.open(whatsappUrl, '_blank')
 }
 
-const shareToInstagram = () => {
-  // Instagram doesn't have direct web sharing, so we copy the link and show instruction
-  copyLink()
-  alert('Link berhasil disalin! Buka Instagram dan paste link ini di story atau post Anda.')
-}
-
-const shareToFacebook = () => {
-  const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(invitationUrl)}&quote=${encodeURIComponent(shareMessage)}`
-  window.open(facebookUrl, '_blank')
-}
-
 const copyLink = async () => {
   try {
     await navigator.clipboard.writeText(invitationUrl)
-    alert('Link undangan berhasil disalin!')
+    success('Link undangan berhasil disalin!')
   } catch (err) {
     console.error('Failed to copy: ', err)
-    // Fallback for older browsers
-    const textArea = document.createElement('textarea')
-    textArea.value = invitationUrl
-    document.body.appendChild(textArea)
-    textArea.select()
-    document.execCommand('copy')
-    document.body.removeChild(textArea)
-    alert('Link undangan berhasil disalin!')
+    error('Gagal menyalin link undangan')
   }
 }
 
@@ -167,6 +169,25 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+/* Responsive improvements for mobile */
+@media (max-width: 640px) {
+  .gradient-text {
+    font-size: 2.5rem !important;
+  }
+  .font-dancing {
+    font-size: 1.5rem !important;
+  }
+}
+
+/* Text styling */
+.gradient-text {
+  background: linear-gradient(45deg, #ffffff, #f8fafc, #e2e8f0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
 /* Share Preview */
 .share-preview {
   max-width: 500px;
@@ -174,34 +195,74 @@ onUnmounted(() => {
 }
 
 .message-card {
-  background: white;
+  background: linear-gradient(135deg, #fefefe 0%, #faf8f6 100%);
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 2rem;
   border: 1px solid #e5e7eb;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
   transition: all 0.3s ease;
+  position: relative;
 }
 
 .message-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+  box-shadow: 
+    0 10px 25px -3px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Paper dividers */
+.paper-divider {
+  height: 1px;
+  background: repeating-linear-gradient(
+    to right,
+    #d1d5db 0px,
+    #d1d5db 10px,
+    transparent 10px,
+    transparent 15px
+  );
+  margin: 1.5rem 0;
+  position: relative;
+}
+
+.paper-divider::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, transparent, #e5e7eb 20%, #e5e7eb 80%, transparent);
+}
+
+.paper-divider-small {
+  height: 1px;
+  background: repeating-linear-gradient(
+    to right,
+    #e5e7eb 0px,
+    #e5e7eb 5px,
+    transparent 5px,
+    transparent 10px
+  );
+  margin: 1rem 0;
+  opacity: 0.6;
 }
 
 /* Share Buttons */
 .share-btn {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem 1rem;
-  border-radius: 12px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
   color: white;
-  min-height: 100px;
-  font-size: 0.875rem;
 }
 
 .share-btn:hover {
@@ -212,46 +273,23 @@ onUnmounted(() => {
 /* WhatsApp Button */
 .whatsapp-btn {
   background: linear-gradient(135deg, #25d366, #128c7e);
+  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
 }
 
 .whatsapp-btn:hover {
   background: linear-gradient(135deg, #128c7e, #075e54);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
 }
 
-/* Instagram Button */
-.instagram-btn {
-  background: linear-gradient(135deg, #e1306c, #bc2a8d);
+/* Copy Button */
+.copy-btn {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
 }
 
-.instagram-btn:hover {
-  background: linear-gradient(135deg, #bc2a8d, #8a3ab9);
-}
-
-/* Facebook Button */
-.facebook-btn {
-  background: linear-gradient(135deg, #4267B2, #3b5998);
-}
-
-.facebook-btn:hover {
-  background: linear-gradient(135deg, #3b5998, #2d4373);
-}
-
-/* Copy Link Button */
-.copy-link-btn {
-  background: linear-gradient(45deg, #6366f1, #4f46e5);
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  font-size: 0.875rem;
-}
-
-.copy-link-btn:hover {
-  background: linear-gradient(45deg, #4f46e5, #4338ca);
-  transform: translateY(-1px);
+.copy-btn:hover {
+  background: linear-gradient(135deg, #4f46e5, #4338ca);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
 }
 
 /* Animation for scroll reveal */
@@ -276,31 +314,23 @@ onUnmounted(() => {
 
 /* Responsive */
 @media (max-width: 640px) {
-  .share-buttons .grid {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
+  .share-buttons .flex {
+    flex-direction: row;
+    gap: 1rem;
   }
   
   .share-btn {
-    flex-direction: row;
-    justify-content: flex-start;
-    text-align: left;
-    min-height: auto;
-    padding: 1rem 1.5rem;
+    width: 50px;
+    height: 50px;
   }
   
-  .share-btn i {
-    margin-right: 0.75rem;
-    margin-bottom: 0 !important;
+  .share-btn .w-8 {
+    width: 1.5rem;
+    height: 1.5rem;
   }
   
   .message-card {
-    padding: 1rem;
-  }
-  
-  .copy-link-btn {
-    padding: 0.625rem 1.25rem;
-    font-size: 0.8rem;
+    padding: 1.5rem;
   }
 }
 </style>

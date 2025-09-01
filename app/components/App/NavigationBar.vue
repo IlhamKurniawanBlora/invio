@@ -27,11 +27,11 @@
 
       <!-- Auto Scroll Toggle Button -->
       <button
-        @click="toggleAutoScroll"
+        @click="handleAutoScrollToggle"
         class="p-2 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all duration-300"
-        :title="autoScroll ? 'Stop Auto Scroll' : 'Start Auto Scroll'"
+        :title="props.isAutoScrolling ? 'Stop Auto Scroll' : 'Start Auto Scroll'"
       >
-        <svg v-if="autoScroll" class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg v-if="props.isAutoScrolling" class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
         </svg>
         <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,55 +59,25 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 
-// Props for shared music state
+// Props for shared music state and scroll functions
 const props = defineProps<{
   isPlaying: boolean;
   toggleMusic: () => Promise<void>;
+  scrollToSection?: (sectionId: string) => void;
+  isAutoScrolling?: boolean;
+  stopAutoScroll?: () => void;
+  startAutoScroll?: () => void;
 }>()
-
-// Auto scroll state
-const autoScroll = ref(false)
-let scrollInterval: NodeJS.Timeout | null = null
 
 // Theme state
 const isDark = ref(true)
 
 // Auto scroll toggle function
-const toggleAutoScroll = () => {
-  autoScroll.value = !autoScroll.value
-  
-  if (autoScroll.value) {
-    startAutoScroll()
+const handleAutoScrollToggle = () => {
+  if (props.isAutoScrolling) {
+    props.stopAutoScroll?.()
   } else {
-    stopAutoScroll()
-  }
-}
-
-// Start auto scroll
-const startAutoScroll = () => {
-  scrollInterval = setInterval(() => {
-    window.scrollBy({
-      top: 2,
-      behavior: 'smooth'
-    })
-    
-    // Reset to top when reaching bottom
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
-      setTimeout(() => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        })
-      }, 2000)
-    }
-  }, 50)
-}
-
-// Stop auto scroll
-const stopAutoScroll = () => {
-  if (scrollInterval) {
-    clearInterval(scrollInterval)
-    scrollInterval = null
+    props.startAutoScroll?.()
   }
 }
 

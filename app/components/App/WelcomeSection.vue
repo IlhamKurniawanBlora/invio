@@ -21,21 +21,21 @@
 
       <div class="relative z-10">
         <!-- Couple Image -->
-        <div class="mb-8" :class="{ 'slide-in-left': imageLoaded }">
+        <div class="mb-8 mounting-animation" :class="{ 'slide-in-left': imageLoaded }">
           <div class="w-32 h-32 mx-auto couple-image flex items-center justify-center">
-            <img src="/assets/images/weedinglogo.png" alt="Wedding Logo" class="w-full h-full object-cover rounded-full shadow-2xl" />
+            <img src="/assets/images/weedinglogo.png" alt="Wedding Logo" class="w-full h-full object-cover rounded-full" />
           </div>
         </div>
 
         <!-- Main Title -->
-        <div class="fade-in-up">
+        <div class="fade-in-up mounting-animation">
           <h1 class="gradient-text mb-4 font-great-vibes text-5xl md:text-6xl lg:text-7xl font-normal leading-tight">
             Wedding Invitation
           </h1>
         </div>
 
         <!-- Decorative Divider -->
-        <div class="fade-in-up-delay-1">
+        <div class="fade-in-up-delay-1 mounting-animation">
           <div class="flex items-center justify-center mb-6">
             <div class="h-px bg-gradient-to-r from-transparent via-white/40 to-transparent w-24"></div>
             <div class="mx-6 text-white/80">
@@ -46,28 +46,28 @@
         </div>
 
         <!-- Couple Names -->
-        <div class="fade-in-up-delay-2">
+        <div class="fade-in-up-delay-2 mounting-animation">
           <h2 class="font-dancing text-2xl md:text-3xl lg:text-4xl font-bold mb-8 text-white/90 tracking-wide">
             Jiyanto & Nur Aini
           </h2>
         </div>
 
         <!-- Invitation Paragraph -->
-        <div class="fade-in-up-delay-2">
+        <div class="fade-in-up-delay-2 mounting-animation">
           <p class="font-poppins text-base md:text-lg text-white/80 mb-8 max-w-2xl mx-auto leading-relaxed">
             Dengan penuh rasa syukur, kami mengundang Bapak/Ibu/Saudara/i beserta keluarga untuk hadir dan memberikan doa restu pada acara pernikahan kami.
           </p>
         </div>
 
         <!-- Quote -->
-        <div class="fade-in-up-delay-2">
+        <div class="fade-in-up-delay-2 mounting-animation">
           <p class="font-playfair text-sm md:text-base text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed italic">
             "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu isteri-isteri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya"
           </p>
         </div>
 
         <!-- CTA Button -->
-        <div class="fade-in-up-delay-3 flex justify-center w-full">
+        <div class="fade-in-up-delay-3 flex justify-center w-full mounting-animation">
           <!-- Enter Invitation Button -->
           <button 
             @click="handleEnterInvitation"
@@ -134,16 +134,19 @@ const bubbles = ref(Array.from({ length: 14 }, () => {
 
 // Lifecycle
 onMounted(() => {
-  // Simulate image loading
+  // Simulate image loading with smooth transition
   setTimeout(() => {
     imageLoaded.value = true
-  }, 500)
+  }, 300)
 })
 
 // Methods
 const handleEnterInvitation = () => {
+  // Add smooth transition before hiding
   isVisible.value = false
-  emit('enter-invitation')
+  setTimeout(() => {
+    emit('enter-invitation')
+  }, 300)
 }
 </script>
 
@@ -206,46 +209,75 @@ const handleEnterInvitation = () => {
 
 /* Animations */
 
+/* Main container animation on mount */
+.fixed {
+  animation: fadeInScale 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Mounting Animation Base Class */
+.mounting-animation {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
 /* Bubble Animation (mirip LoadingApp) */
 .bubble {
-  animation: bubble-rise var(--animation-duration, 8s) ease-in-out infinite;
+  animation: bubble-rise var(--animation-duration, 10s) cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 70%, transparent 100%);
-  border: 1px solid rgba(255,255,255,0.2);
-  backdrop-filter: blur(2px);
-  text-shadow: 0 0 10px currentColor;
+  background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 70%, transparent 100%);
+  border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(3px);
+  text-shadow: 0 0 15px currentColor;
+  will-change: transform, opacity;
 }
 
 @keyframes bubble-rise {
   0% {
-    transform: translateY(0) translateX(0) scale(0.5) rotate(0deg);
+    transform: translateY(0) translateX(0) scale(0.3) rotate(0deg);
     opacity: 0;
   }
-  5% {
-    opacity: 0.6;
-    transform: translateY(-5vh) translateX(calc(var(--drift-x) * 0.1)) scale(0.7) rotate(18deg);
-  }
-  25% {
-    opacity: 0.8;
-    transform: translateY(-25vh) translateX(calc(var(--drift-x) * 0.3)) scale(1) rotate(90deg);
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(-50vh) translateX(calc(var(--drift-x) * 0.6)) scale(1.1) rotate(180deg);
-  }
-  75% {
-    opacity: 0.7;
-    transform: translateY(-75vh) translateX(calc(var(--drift-x) * 0.8)) scale(0.9) rotate(270deg);
-  }
-  95% {
+  3% {
     opacity: 0.3;
-    transform: translateY(-95vh) translateX(var(--drift-x)) scale(0.6) rotate(340deg);
+    transform: translateY(-3vh) translateX(calc(var(--drift-x) * 0.05)) scale(0.5) rotate(9deg);
+  }
+  15% {
+    opacity: 0.7;
+    transform: translateY(-15vh) translateX(calc(var(--drift-x) * 0.2)) scale(0.8) rotate(45deg);
+  }
+  35% {
+    opacity: 1;
+    transform: translateY(-35vh) translateX(calc(var(--drift-x) * 0.4)) scale(1) rotate(135deg);
+  }
+  60% {
+    opacity: 0.9;
+    transform: translateY(-60vh) translateX(calc(var(--drift-x) * 0.7)) scale(1.1) rotate(225deg);
+  }
+  85% {
+    opacity: 0.5;
+    transform: translateY(-85vh) translateX(calc(var(--drift-x) * 0.9)) scale(0.7) rotate(315deg);
+  }
+  97% {
+    opacity: 0.1;
+    transform: translateY(-97vh) translateX(var(--drift-x)) scale(0.4) rotate(350deg);
   }
   100% {
     opacity: 0;
-    transform: translateY(-110vh) translateX(var(--drift-x)) scale(0.3) rotate(360deg);
+    transform: translateY(-110vh) translateX(var(--drift-x)) scale(0.2) rotate(360deg);
   }
 }
 
@@ -258,72 +290,86 @@ const handleEnterInvitation = () => {
 }
 
 .heart-beat {
-  animation: heartbeat 2s ease-in-out infinite;
+  animation: heartbeat 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 }
 
 @keyframes heartbeat {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  0%, 100% { 
+    transform: scale(1); 
+    filter: brightness(1);
+  }
+  50% { 
+    transform: scale(1.1); 
+    filter: brightness(1.2);
+  }
 }
 
 .slide-in-left {
-  animation: slideInLeft 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: slideInLeft 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes slideInLeft {
-  from {
+  0% {
     opacity: 0;
-    transform: translateX(-100px);
+    transform: translateX(-50px) scale(0.95);
   }
-  to {
+  50% {
+    opacity: 0.7;
+    transform: translateX(-10px) scale(0.98);
+  }
+  100% {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
   }
 }
 
 .fade-in-up {
-  animation: fadeInUp 1s ease-out forwards;
+  animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+  transform: translateY(30px);
 }
 
 .fade-in-up-delay-1 {
-  animation: fadeInUp 1s ease-out 0.5s forwards;
+  animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
   opacity: 0;
   transform: translateY(30px);
 }
 
 .fade-in-up-delay-2 {
-  animation: fadeInUp 1s ease-out 1s forwards;
+  animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
   opacity: 0;
   transform: translateY(30px);
 }
 
 .fade-in-up-delay-3 {
-  animation: fadeInUp 1s ease-out 1.5s forwards;
+  animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
   opacity: 0;
   transform: translateY(30px);
 }
 
 @keyframes fadeInUp {
-  from {
+  0% {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(30px) scale(0.95);
   }
-  to {
+  60% {
+    opacity: 0.8;
+    transform: translateY(-5px) scale(1.01);
+  }
+  100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
 .couple-image {
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
-  transition: all 0.4s ease;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, box-shadow;
 }
 
 .couple-image:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 80px rgba(255, 255, 255, 0.4);
-  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.05) rotate(2deg);
+  box-shadow: 0 20px 60px rgba(255, 255, 255, 0.4), 0 0 0 4px rgba(255, 255, 255, 0.1);
 }
 
 .elegant-button {
@@ -332,7 +378,8 @@ const handleEnterInvitation = () => {
   background: linear-gradient(135deg, #ffffff, #f8fafc);
   border: 2px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, box-shadow;
 }
 
 .elegant-button::before {
@@ -343,7 +390,7 @@ const handleEnterInvitation = () => {
   width: 100%;
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  transition: left 0.6s ease;
+  transition: left 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .elegant-button:hover::before {
@@ -351,13 +398,17 @@ const handleEnterInvitation = () => {
 }
 
 .elegant-button:hover {
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 15px 40px rgba(255, 255, 255, 0.3);
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: 
+    0 25px 50px rgba(255, 255, 255, 0.3),
+    0 15px 30px rgba(255, 255, 255, 0.2),
+    0 0 0 3px rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.4);
 }
 
 .elegant-button:active {
-  transform: translateY(-1px) scale(1.02);
+  transform: translateY(-2px) scale(1.02);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Responsive adjustments */

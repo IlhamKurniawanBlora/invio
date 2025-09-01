@@ -1,8 +1,22 @@
 <template>
-  <section class="py-16 text-center bg-gradient-to-br from-slate-50 via-white to-slate-100 min-h-screen">
+  <section id="gallery" class="pt-16 pb-24 text-center bg-gradient-to-br from-slate-50 via-white to-slate-100 min-h-screen relative overflow-hidden">
+    <!-- Angel Decorations at Corners -->
+    <div class="absolute top-6 left-6 z-10 opacity-30 animate-float scroll-animate-fade-left" ref="angelTopLeftRef">
+      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-20 h-20 md:w-28 md:h-28" />
+    </div>
+    <div class="absolute top-6 right-6 z-10 opacity-30 animate-float-reverse scroll-animate-fade-right" ref="angelTopRightRef">
+      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-20 h-20 md:w-28 md:h-28 transform scale-x-[-1]" />
+    </div>
+    <div class="absolute bottom-6 left-6 z-10 opacity-25 animate-float-slow scroll-animate-fade-left scroll-animate-delay-3" ref="angelBottomLeftRef">
+      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-16 h-16 md:w-24 md:h-24 transform -rotate-90" />
+    </div>
+    <div class="absolute bottom-6 right-6 z-10 opacity-25 animate-float-slow-reverse scroll-animate-fade-right scroll-animate-delay-3" ref="angelBottomRightRef">
+      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-16 h-16 md:w-24 md:h-24 transform scale-x-[-1] rotate-90" />
+    </div>
+
     <!-- Section Title -->
-    <div class="text-center mb-16 fade-in-up">
-      <h2 class="gradient-text font-great-vibes text-4xl md:text-5xl lg:text-6xl font-normal mb-4">
+    <div class="text-center mb-16 scroll-animate-fade-up relative z-20" ref="titleRef">
+      <h2 class="p-4 gradient-text font-great-vibes text-4xl md:text-5xl lg:text-6xl font-normal mb-4">
         Galeri Foto
       </h2>
       <div class="flex items-center justify-center">
@@ -15,9 +29,9 @@
     </div>
     
     <!-- Grid Layout -->
-    <div class="grid grid-cols-1 gap-3 max-w-6xl mx-auto px-4 md:grid-cols-4 md:grid-rows-3 md:h-[500px] md:gap-4">
+    <div class="grid grid-cols-1 gap-3 max-w-6xl mx-auto px-4 md:grid-cols-4 md:grid-rows-3 md:h-[500px] md:gap-4 relative z-20" ref="galleryGridRef">
       <!-- Large image (1x1 on mobile, 2x2 on desktop) -->
-      <div class="col-span-1 row-span-1 h-screen md:col-span-2 md:row-span-2 md:h-full">
+      <div class="col-span-1 row-span-1 h-screen md:col-span-2 md:row-span-2 md:h-full scroll-animate-scale scroll-animate-delay-1">
         <img :src="galleryImages[0].src" 
              :alt="galleryImages[0].alt"
              @click="openPreview(galleryImages[0])"
@@ -25,7 +39,7 @@
       </div>
       
       <!-- Medium image (1x1 on mobile, 1x2 on desktop) -->
-      <div class="col-span-1 row-span-1 h-screen md:col-span-1 md:row-span-2 md:h-full">
+      <div class="col-span-1 row-span-1 h-screen md:col-span-1 md:row-span-2 md:h-full scroll-animate-fade-right scroll-animate-delay-2">
         <img :src="galleryImages[1].src" 
              :alt="galleryImages[1].alt"
              @click="openPreview(galleryImages[1])"
@@ -33,14 +47,14 @@
       </div>
       
       <!-- Small images (1x1 each) -->
-      <div class="col-span-1 row-span-1 h-screen md:col-span-1 md:row-span-1 md:h-full">
+      <div class="col-span-1 row-span-1 h-screen md:col-span-1 md:row-span-1 md:h-full scroll-animate-fade-up scroll-animate-delay-3">
         <img :src="galleryImages[2].src" 
              :alt="galleryImages[2].alt"
              @click="openPreview(galleryImages[2])"
              class="w-full h-full object-cover rounded-lg shadow-xl cursor-pointer hover:scale-105 transition-all duration-300 hover:shadow-2xl">
       </div>
       
-      <div class="col-span-1 row-span-1 h-screen md:col-span-1 md:row-span-1 md:h-full">
+      <div class="col-span-1 row-span-1 h-screen md:col-span-1 md:row-span-1 md:h-full scroll-animate-fade-up scroll-animate-delay-4">
         <img :src="galleryImages[3].src" 
              :alt="galleryImages[3].alt"
              @click="openPreview(galleryImages[3])"
@@ -48,7 +62,7 @@
       </div>
       
       <!-- Wide image (1x1 on mobile, 2x1 on desktop) -->
-      <div class="col-span-1 row-span-1 h-screen md:col-span-2 md:row-span-1 md:h-full">
+      <div class="col-span-1 row-span-1 h-screen md:col-span-2 md:row-span-1 md:h-full scroll-animate-zoom scroll-animate-delay-2">
         <img :src="galleryImages[4].src" 
              :alt="galleryImages[4].alt"
              @click="openPreview(galleryImages[4])"
@@ -86,7 +100,24 @@
   </section>
 </template>
 <script setup lang="ts">
-import { ref, reactive, onMounted, onUnmounted } from 'vue'
+import { ref, reactive, onMounted, onUnmounted, nextTick } from 'vue'
+import { useScrollAnimation } from '~/composables/useScrollAnimation'
+
+// Scroll animation setup
+const { observe } = useScrollAnimation({
+  threshold: 0.1,
+  rootMargin: '0px 0px -100px 0px',
+  once: true,
+  stagger: 150
+})
+
+// Template refs for animation
+const titleRef = ref<HTMLElement>()
+const galleryGridRef = ref<HTMLElement>()
+const angelTopLeftRef = ref<HTMLElement>()
+const angelTopRightRef = ref<HTMLElement>()
+const angelBottomLeftRef = ref<HTMLElement>()
+const angelBottomRightRef = ref<HTMLElement>()
 
 interface GalleryImage {
   src: string
@@ -133,6 +164,23 @@ const nextImage = () => {
   }
   selectedImage.value = galleryImages[selectedIndex.value] || null
 }
+
+// Lifecycle
+onMounted(() => {
+  // Setup scroll animations
+  nextTick(() => {
+    if (titleRef.value) observe(titleRef.value)
+    if (galleryGridRef.value) observe(galleryGridRef.value)
+    if (angelTopLeftRef.value) observe(angelTopLeftRef.value)
+    if (angelTopRightRef.value) observe(angelTopRightRef.value)
+    if (angelBottomLeftRef.value) observe(angelBottomLeftRef.value)
+    if (angelBottomRightRef.value) observe(angelBottomRightRef.value)
+    
+    // Also observe individual gallery items
+    const galleryItems = document.querySelectorAll('#gallery .scroll-animate-scale, #gallery .scroll-animate-fade-right, #gallery .scroll-animate-fade-up, #gallery .scroll-animate-zoom')
+    galleryItems.forEach(item => observe(item as Element))
+  })
+})
 
 // Close preview with ESC key
 const handleKeydown = (event: KeyboardEvent) => {
@@ -190,6 +238,32 @@ onUnmounted(() => {
 @keyframes heartbeat {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.1); }
+}
+
+/* Angel decoration animations */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float 6s ease-in-out infinite reverse;
+}
+
+.animate-float-slow {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animate-float-slow-reverse {
+  animation: float 8s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% { 
+    transform: translateY(-10px) rotate(1deg);
+  }
 }
 
 .fade-in-up {
@@ -276,7 +350,7 @@ button:hover {
   }
   
   .grid {
-    gap: 0;
+    gap: 1.5rem;
   }
   
   .grid img {

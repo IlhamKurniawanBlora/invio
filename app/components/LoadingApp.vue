@@ -11,7 +11,7 @@
         <img
           src="/assets/images/weedingicon.png"
           alt="Wedding Logo"
-          class="w-28 h-28 md:w-36 md:h-36 rounded-full object-cover border-4 border-white shadow-lg bg-white/10"
+          class="w-28 h-28 md:w-36 md:h-36 rounded-full object-cover shadow-lg"
           style="object-position: center;"
         />
       </div>
@@ -53,7 +53,7 @@
         :class="{ 'animate-fade-in': showProgress }"
       >
         <div 
-          class="h-full bg-gradient-to-r from-pink-400 to-purple-400 rounded-full transition-all duration-300 ease-out"
+          class="h-full bg-gradient-to-r from-slate-400 to-slate-200 rounded-full transition-all duration-300 ease-out"
           :style="{ width: loadingProgress + '%' }"
         ></div>
       </div>

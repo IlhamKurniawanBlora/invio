@@ -1,13 +1,35 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
+import { useScrollAnimation } from '~/composables/useScrollAnimation'
+
+// Scroll animation setup
+const { observe } = useScrollAnimation({
+  threshold: 0.1,
+  rootMargin: '0px 0px -100px 0px',
+  once: true,
+  stagger: 200
+})
+
+// Template refs for animation
+const titleRef = ref<HTMLElement>()
+const eventCardRef = ref<HTMLElement>()
+
+// Lifecycle
+onMounted(() => {
+  // Setup scroll animations
+  nextTick(() => {
+    if (titleRef.value) observe(titleRef.value)
+    if (eventCardRef.value) observe(eventCardRef.value)
+  })
+})
 </script>
 <template>
-    <section class="min-h-screen relative overflow-hidden text-white flex items-center justify-center">
+    <section id="event" class="min-h-screen relative overflow-hidden text-white flex items-center justify-center">
         <!-- Main Content -->
         <div class="relative z-30 w-full px-6 py-16">
             <!-- Section Title -->
-            <div class="text-center mb-16 fade-in-up">
-                <h2 class="gradient-text font-great-vibes text-4xl md:text-5xl lg:text-6xl font-normal mb-4">
+            <div class="text-center mb-16 scroll-animate-fade-up" ref="titleRef">
+                <h2 class="py-2 gradient-text font-great-vibes text-4xl md:text-5xl lg:text-6xl font-normal mb-4">
                     Detail Acara
                 </h2>
                 <div class="flex items-center justify-center">
@@ -22,7 +44,7 @@ import { ref, onMounted } from 'vue'
             <!-- Event Card -->
             <div class="max-w-lg mx-auto">
                 <!-- Ngunduh Mantu -->
-                <div class="fade-in-up-delay-1 bg-white/10 backdrop-blur-sm rounded-3xl p-10 text-center hover:bg-white/20 transition-all duration-500 border border-white/20 shadow-2xl relative overflow-hidden">
+                <div class="scroll-animate-scale scroll-animate-delay-1 bg-white/10 backdrop-blur-sm rounded-3xl p-10 text-center hover:bg-white/20 transition-all duration-500 border border-white/20 shadow-2xl relative overflow-hidden" ref="eventCardRef">
                     <!-- Angel Decorations inside card -->
                     <div class="absolute top-4 left-4 corner-decoration fade-in-corner-tl">
                         <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-12 h-12 opacity-40" />

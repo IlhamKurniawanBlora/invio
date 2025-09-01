@@ -2,6 +2,7 @@
 /* Baru Tailwind */
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./scroll-animations.css";
 
 @custom-variant dark (&:is(.dark *));
 

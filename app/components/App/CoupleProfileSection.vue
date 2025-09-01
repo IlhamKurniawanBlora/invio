@@ -1,10 +1,24 @@
 <template>
-  <section class="min-h-screen relative overflow-hidden flex items-center justify-center">
+  <section id="couple" class="min-h-screen relative overflow-hidden flex items-center justify-center">
+    <!-- Angel Decorations -->
+    <div class="absolute top-10 left-10 z-20 opacity-20 animate-float scroll-animate-fade-left" ref="angelTopLeftRef">
+      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-24 h-24 md:w-32 md:h-32" />
+    </div>
+    <div class="absolute top-10 right-10 z-20 opacity-20 animate-float-reverse scroll-animate-fade-right" ref="angelTopRightRef">
+      <img src="/assets/images/angeldecor.png" alt="Decorative Angel" class="w-20 h-20 md:w-28 md:h-28 rotate-90" />
+    </div>
+    <div class="absolute bottom-10 left-10 z-20 opacity-15 animate-float-slow scroll-animate-fade-left scroll-animate-delay-3" ref="angelBottomLeftRef">
+      <img src="/assets/images/angeldecor.png" alt="Decorative Angel" class="w-16 h-16 md:w-24 md:h-24 transform scale-x-[-1] rotate-180" />
+    </div>
+    <div class="absolute bottom-10 right-10 z-20 opacity-15 animate-float-slow-reverse scroll-animate-fade-right scroll-animate-delay-3" ref="angelBottomRightRef">
+      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-20 h-20 md:w-28 md:h-28 transform scale-x-[-1] rotate-90" />
+    </div>
+
     <!-- Main Content -->
     <div class="relative z-30 w-full px-6 py-16">
       <!-- Section Title -->
-      <div class="text-center mb-16 fade-in-up">
-        <h2 class="gradient-text font-great-vibes text-4xl md:text-5xl lg:text-6xl font-normal mb-4">
+      <div class="text-center mb-16 scroll-animate-fade-up" ref="titleRef">
+        <h2 class="gradient-text font-great-vibes text-4xl md:text-5xl lg:text-6xl font-normal mb-4 py-2">
           Mempelai
         </h2>
         <div class="flex items-center justify-center">
@@ -20,9 +34,16 @@
       <div class="hidden md:flex max-w-6xl mx-auto items-center justify-center">
         <!-- Couple Content -->
         <div class="flex-1">
-          <div class="grid grid-cols-2 gap-12">
+          <div class="grid grid-cols-2 gap-12 relative">
+            <!-- Central Angel Decoration -->
+            <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 scroll-animate-scale scroll-animate-delay-2" ref="centralAngelRef">
+              <div class="w-24 h-24 opacity-30 animate-pulse">
+                <img src="/assets/images/love.png" alt="Central Angel" class="w-full h-full" />
+              </div>
+            </div>
+
             <!-- Jiyanto -->
-            <div class="text-center fade-in-up-delay-1">
+            <div class="text-center scroll-animate-fade-left scroll-animate-delay-1" ref="jiyantoRef">
               <div class="w-48 h-48 mx-auto rounded-full mb-6 overflow-hidden border-4 border-white/30 shadow-2xl">
                 <img src="/assets/images/jiyanto.png" alt="Jiyanto" class="w-full h-full object-cover" />
               </div>
@@ -32,7 +53,7 @@
             </div>
 
             <!-- Nur Aini -->
-            <div class="text-center fade-in-up-delay-2">
+            <div class="text-center scroll-animate-fade-right scroll-animate-delay-2" ref="nurAiniRef">
               <div class="w-48 h-48 mx-auto rounded-full mb-6 overflow-hidden border-4 border-white/30 shadow-2xl">
                 <img src="/assets/images/nuraini.png" alt="Nur Aini" class="w-full h-full object-cover" />
               </div>
@@ -47,7 +68,7 @@
       <!-- Mobile Layout -->
       <div class="md:hidden max-w-md mx-auto">
         <!-- Jiyanto -->
-        <div class="text-center mb-12 fade-in-up-delay-1">
+        <div class="text-center mb-12 scroll-animate-fade-up scroll-animate-delay-1" ref="jiyantoMobileRef">
           <div class="w-40 h-40 mx-auto rounded-full mb-6 overflow-hidden border-4 border-white/30 shadow-2xl">
             <img src="/assets/images/jiyanto.png" alt="Jiyanto" class="w-full h-full object-cover" />
           </div>
@@ -56,8 +77,15 @@
           <div class="text-white/60 text-xs font-poppins leading-relaxed">Dukuh Klompok, Desa Tanjung, RT 01 RW 03, Kedungtuban, Blora</div>
         </div>
 
+        <!-- Angel Divider for Mobile -->
+        <div class="flex justify-center my-8 scroll-animate-scale scroll-animate-delay-2" ref="angelDividerRef">
+          <div class="w-16 h-16 opacity-30 animate-bounce">
+            <img src="/assets/images/love.png" alt="Angel Divider" class="w-full h-full" />
+          </div>
+        </div>
+
         <!-- Nur Aini -->
-        <div class="text-center fade-in-up-delay-3">
+        <div class="text-center scroll-animate-fade-up scroll-animate-delay-3" ref="nurAiniMobileRef">
           <div class="w-40 h-40 mx-auto rounded-full mb-6 overflow-hidden border-4 border-white/30 shadow-2xl">
             <img src="/assets/images/nuraini.png" alt="Nur Aini" class="w-full h-full object-cover" />
           </div>
@@ -70,7 +98,47 @@
   </section>
 </template>
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
+import { useScrollAnimation } from '~/composables/useScrollAnimation'
+
+// Scroll animation setup
+const { observe } = useScrollAnimation({
+  threshold: 0.1,
+  rootMargin: '0px 0px -100px 0px',
+  once: true,
+  stagger: 200
+})
+
+// Template refs for animation
+const titleRef = ref<HTMLElement>()
+const centralAngelRef = ref<HTMLElement>()
+const jiyantoRef = ref<HTMLElement>()
+const nurAiniRef = ref<HTMLElement>()
+const jiyantoMobileRef = ref<HTMLElement>()
+const nurAiniMobileRef = ref<HTMLElement>()
+const angelDividerRef = ref<HTMLElement>()
+const angelTopLeftRef = ref<HTMLElement>()
+const angelTopRightRef = ref<HTMLElement>()
+const angelBottomLeftRef = ref<HTMLElement>()
+const angelBottomRightRef = ref<HTMLElement>()
+
+// Lifecycle
+onMounted(() => {
+  // Setup scroll animations
+  nextTick(() => {
+    if (titleRef.value) observe(titleRef.value)
+    if (centralAngelRef.value) observe(centralAngelRef.value)
+    if (jiyantoRef.value) observe(jiyantoRef.value)
+    if (nurAiniRef.value) observe(nurAiniRef.value)
+    if (jiyantoMobileRef.value) observe(jiyantoMobileRef.value)
+    if (nurAiniMobileRef.value) observe(nurAiniMobileRef.value)
+    if (angelDividerRef.value) observe(angelDividerRef.value)
+    if (angelTopLeftRef.value) observe(angelTopLeftRef.value)
+    if (angelTopRightRef.value) observe(angelTopRightRef.value)
+    if (angelBottomLeftRef.value) observe(angelBottomLeftRef.value)
+    if (angelBottomRightRef.value) observe(angelBottomRightRef.value)
+  })
+})
 </script>
 
 <style scoped>
@@ -97,6 +165,32 @@ import { ref, onMounted } from 'vue'
 @keyframes heartbeat {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.1); }
+}
+
+/* Angel decoration animations */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float 6s ease-in-out infinite reverse;
+}
+
+.animate-float-slow {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animate-float-slow-reverse {
+  animation: float 8s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% { 
+    transform: translateY(-15px) rotate(2deg);
+  }
 }
 
 /* Animation utilities */

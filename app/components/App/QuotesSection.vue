@@ -1,10 +1,10 @@
 <template>
-  <section class="min-h-screen relative overflow-hidden items-center justify-center">
+  <section id="quotes" class="min-h-screen relative overflow-hidden items-center justify-center">
     <!-- Main Content -->
     <div class="relative z-30 text-center text-white px-6 max-w-5xl mx-auto flex items-center justify-center min-h-screen">
       <div class="w-full">
       <!-- Main Heading -->
-      <div class="fade-in-up mb-8">
+      <div class="scroll-animate-fade-up mb-8" ref="titleRef">
         <h1 class="gradient-text font-great-vibes text-5xl md:text-6xl lg:text-7xl font-normal leading-tight">
         Jiyanto & Nur Aini
         </h1>
@@ -14,7 +14,7 @@
       </div>
 
       <!-- Decorative Divider -->
-      <div class="fade-in-up-delay-1">
+      <div class="scroll-animate-fade-up scroll-animate-delay-1" ref="dividerRef">
         <div class="flex items-center justify-center mb-8">
         <div class="h-px bg-gradient-to-r from-transparent via-white/40 to-transparent w-24"></div>
         <div class="mx-6 text-white/80">
@@ -25,30 +25,30 @@
       </div>
 
       <!-- Quote -->
-      <div class="fade-in-up-delay-2 mb-12">
+      <div class="scroll-animate-fade-up scroll-animate-delay-2 mb-12" ref="quoteRef">
         <blockquote class="font-playfair text-lg md:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed italic">
         "Alhamdulillah, Allah telah mempertemukan kami sebagai jodoh. Dengan ridho-Nya, kami akan menjalani hidup bersama dalam ikatan yang suci"
         </blockquote>
       </div>
 
       <!-- Countdown Timer -->
-      <div class="fade-in-up-delay-3">
+      <div class="scroll-animate-scale scroll-animate-delay-3" ref="countdownRef">
         <div class="mb-6">
         <h3 class="font-poppins text-lg md:text-xl text-white/80 mb-6">Menuju Hari Bahagia</h3>
         <div class="grid grid-cols-4 gap-4 max-w-md mx-auto">
-          <div class="countdown-item">
+          <div class="countdown-item scroll-animate-fade-up scroll-animate-delay-4">
           <div class="countdown-number">{{ timeLeft.days }}</div>
           <div class="countdown-label">Hari</div>
           </div>
-          <div class="countdown-item">
+          <div class="countdown-item scroll-animate-fade-up scroll-animate-delay-5">
           <div class="countdown-number">{{ timeLeft.hours }}</div>
           <div class="countdown-label">Jam</div>
           </div>
-          <div class="countdown-item">
+          <div class="countdown-item scroll-animate-fade-up scroll-animate-delay-4">
           <div class="countdown-number">{{ timeLeft.minutes }}</div>
           <div class="countdown-label">Menit</div>
           </div>
-          <div class="countdown-item">
+          <div class="countdown-item scroll-animate-fade-up scroll-animate-delay-5">
           <div class="countdown-number">{{ timeLeft.seconds }}</div>
           <div class="countdown-label">Detik</div>
           </div>
@@ -56,7 +56,7 @@
         </div>
         
         <!-- Wedding Date -->
-        <div class="font-poppins text-base md:text-lg text-white/70">
+        <div class="font-poppins text-base md:text-lg text-white/70 scroll-animate-fade-up scroll-animate-delay-3">
         07 Desember 2025 • 07:00 WIB
         </div>
       </div>
@@ -66,7 +66,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed, nextTick } from 'vue'
+import { useScrollAnimation } from '~/composables/useScrollAnimation'
+
+// Scroll animation setup
+const { observe } = useScrollAnimation({
+  threshold: 0.1,
+  rootMargin: '0px 0px -100px 0px',
+  once: true,
+  stagger: 150
+})
+
+// Template refs for animation
+const titleRef = ref<HTMLElement>()
+const dividerRef = ref<HTMLElement>()
+const quoteRef = ref<HTMLElement>()
+const countdownRef = ref<HTMLElement>()
 
 // Countdown state
 const targetDate = new Date('2025-12-07T07:00:00')
@@ -96,6 +111,18 @@ const updateCountdown = () => {
 onMounted(() => {
   updateCountdown()
   setInterval(updateCountdown, 1000)
+  
+  // Setup scroll animations
+  nextTick(() => {
+    if (titleRef.value) observe(titleRef.value)
+    if (dividerRef.value) observe(dividerRef.value)
+    if (quoteRef.value) observe(quoteRef.value)
+    if (countdownRef.value) observe(countdownRef.value)
+    
+    // Also observe countdown items
+    const countdownItems = document.querySelectorAll('.countdown-item')
+    countdownItems.forEach(item => observe(item as Element))
+  })
 })
 
 onUnmounted(() => {
