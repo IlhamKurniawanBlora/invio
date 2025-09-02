@@ -77,7 +77,7 @@ onMounted(() => {
                             Dukuh Klompok, Desa Tanjung, RT 01 RW 03, Kedungtuban, Blora
                         </p>
                         <div class="mt-8">
-                            <a href="https://maps.google.com" target="_blank" 
+                            <a href="https://maps.app.goo.gl/nareYcxHAFfc9XSE9?g_st=awb" target="_blank" 
                                class="inline-flex items-center px-6 py-3 bg-white/20 hover:bg-white/30 rounded-full text-base font-medium transition-all duration-300 border border-white/30">
                                 <i class="fas fa-map-marker-alt mr-2"></i>
                                 Lihat Lokasi
