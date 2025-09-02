@@ -12,7 +12,7 @@ import SocialShareSection from '../components/App/SocialShareSection.vue';
 import FooterSection from '../components/App/FooterSection.vue';
 
 // Import audio file - Nuxt 4 way
-import audioFile from '~/assets/music/NikenSalindry-SangGuruSejati.mp3';
+import audioFile from '~/assets/music/Kabagyan-Sadewok.mp3';
 
 // State untuk loading dan welcome
 import { ref, onMounted, onUnmounted } from 'vue';
@@ -41,9 +41,9 @@ const initializeAudio = () => {
       // Use imported audio file or try multiple paths
       const audioSources = [
         audioFile, // Vite imported asset
-        '/music/NikenSalindry-SangGuruSejati.mp3', // Public folder
-        '/_nuxt/assets/music/NikenSalindry-SangGuruSejati.mp3', // Build path
-        '/assets/music/NikenSalindry-SangGuruSejati.mp3' // Direct assets
+        '/music/Kabagyan-Sadewok.mp3', // Public folder
+        '/_nuxt/assets/music/Kabagyan-Sadewok.mp3', // Build path
+        '/assets/music/Kabagyan-Sadewok.mp3' // Direct assets
       ];
       
       audioPlayer.value = new Audio();
@@ -99,9 +99,9 @@ const tryFallbackSources = () => {
   if (!audioPlayer.value) return;
   
   const fallbackSources = [
-    '/music/NikenSalindry-SangGuruSejati.mp3',
-    '/_nuxt/music/NikenSalindry-SangGuruSejati.mp3',
-    '/public/music/NikenSalindry-SangGuruSejati.mp3'
+    '/music/Kabagyan-Sadewok.mp3',
+    '/_nuxt/music/Kabagyan-Sadewok.mp3',
+    '/public/music/Kabagyan-Sadewok.mp3'
   ];
   
   let currentIndex = 0;

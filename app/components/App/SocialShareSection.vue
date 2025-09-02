@@ -38,7 +38,7 @@
                 </div>
                 <div class="flex items-center justify-center">
                   <Icon name="lucide:clock" class="w-4 h-4 mr-2 text-amber-600" />
-                  <span>Wektu: 07:00 WIB</span>
+                  <span>Wektu: 10:00 WIB - Selesai</span>
                 </div>
                 <div class="flex items-center justify-center">
                   <Icon name="lucide:map-pin" class="w-4 h-4 mr-2 text-amber-600" />
@@ -113,7 +113,7 @@ const shareMessage = `🕌 Serat Pawiwahan 🕌
 
 Jiyanto & Nur Aini
 📅 Tanggal: 07 Desember 2025
-🕰️ Wektu: 07:00 WIB
+🕰️ Wektu: 10:00 WIB - Selesai
 📍 Wonten griyanipun penganten putra
 
 Kanthi rasa bekti lan pangabekti, kula nyuwun pangapunten menawi wonten kalepatan. Mugi-mugi panjenengan kersa rawuh wonten ing adicara pawiwahan punika kangge maringi berkah lan pangestu dhumateng kekalih penganten.

@@ -56,8 +56,8 @@
         </div>
         
         <!-- Wedding Date -->
-        <div class="font-poppins text-base md:text-lg text-white/70 scroll-animate-fade-up scroll-animate-delay-3">
-        07 Desember 2025 • 07:00 WIB
+        <div class="font-poppins text-base md:text-lg text-white/70 scroll-animate-fade-up scroll-animate-delay-3" ref="weddingDateRef">
+        07 Desember 2025 • 10:00 WIB
         </div>
       </div>
       </div>
@@ -82,9 +82,10 @@ const titleRef = ref<HTMLElement>()
 const dividerRef = ref<HTMLElement>()
 const quoteRef = ref<HTMLElement>()
 const countdownRef = ref<HTMLElement>()
+const weddingDateRef = ref<HTMLElement>()
 
 // Countdown state
-const targetDate = new Date('2025-12-07T07:00:00')
+const targetDate = new Date('2025-12-07T10:00:00')
 const timeLeft = ref({
   days: 0,
   hours: 0,
@@ -118,6 +119,7 @@ onMounted(() => {
     if (dividerRef.value) observe(dividerRef.value)
     if (quoteRef.value) observe(quoteRef.value)
     if (countdownRef.value) observe(countdownRef.value)
+    if (weddingDateRef.value) observe(weddingDateRef.value)
     
     // Also observe countdown items
     const countdownItems = document.querySelectorAll('.countdown-item')

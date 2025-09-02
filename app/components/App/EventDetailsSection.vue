@@ -63,11 +63,11 @@ onMounted(() => {
                     <div class="space-y-4 text-white/80 font-poppins relative z-10">
                         <p class="flex items-center justify-center text-base lg:text-lg">
                             <i class="fas fa-calendar mr-3 text-white/60"></i> 
-                            Sabtu, 07 Desember 2025
+                            Minggu, 07 Desember 2025
                         </p>
                         <p class="flex items-center justify-center text-base lg:text-lg">
                             <i class="fas fa-clock mr-3 text-white/60"></i> 
-                            11:00 - 15:00 WIB
+                            10:00 WIB - Selesai
                         </p>
                         <p class="flex items-center justify-center text-base lg:text-lg">
                             <i class="fas fa-home mr-3 text-white/60"></i> 
