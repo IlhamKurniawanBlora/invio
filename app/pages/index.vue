@@ -214,18 +214,20 @@ const startAutoScroll = () => {
   const scrollStep = () => {
     if (!isAutoScrolling.value) return;
     
-    const scrollSpeed = 3; // pixels per frame (increased from 1)
+    const scrollSpeed = 8; // pixels per frame (optimized for smoothness)
     const currentScroll = window.pageYOffset;
     const targetScroll = currentScroll + scrollSpeed;
     
+    // Use smooth behavior for better visual effect
     window.scrollTo({
       top: targetScroll,
-      behavior: 'auto' // Use auto for smooth continuous scroll
+      behavior: 'smooth'
     });
     
     // Continue scrolling if not at bottom
     if (currentScroll < document.documentElement.scrollHeight - window.innerHeight) {
-      requestAnimationFrame(scrollStep);
+      // Add slight delay for smoother animation
+      setTimeout(() => requestAnimationFrame(scrollStep), 16);
     } else {
       stopAutoScroll();
     }

@@ -52,10 +52,21 @@
           </h2>
         </div>
 
+        <!-- Guest Name Section -->
+        <div v-if="guestName" class="fade-in-up-delay-2 mounting-animation">
+          <div class="mb-6">
+            <p class="font-poppins text-sm md:text-base text-white/70 mb-2">Kepada Yth:</p>
+            <h3 class="font-great-vibes text-2xl md:text-3xl lg:text-4xl font-normal text-white gradient-text-guest tracking-wide">
+              {{ guestName }}
+            </h3>
+          </div>
+        </div>
+
         <!-- Invitation Paragraph -->
         <div class="fade-in-up-delay-2 mounting-animation">
           <p class="font-poppins text-base md:text-lg text-white/80 mb-8 max-w-2xl mx-auto leading-relaxed">
-            Dengan penuh rasa syukur, kami mengundang Bapak/Ibu/Saudara/i beserta keluarga untuk hadir dan memberikan doa restu pada acara pernikahan kami.
+            <span v-if="guestName">Dengan penuh rasa syukur, kami mengundang {{ guestName }} beserta keluarga untuk hadir dan memberikan doa restu pada acara pernikahan kami.</span>
+            <span v-else>Dengan penuh rasa syukur, kami mengundang Bapak/Ibu/Saudara/i beserta keluarga untuk hadir dan memberikan doa restu pada acara pernikahan kami.</span>
           </p>
         </div>
 
@@ -105,6 +116,13 @@ const isLight = computed(() => props.light)
 const emit = defineEmits<{
   'enter-invitation': []
 }>()
+
+// Get guest name from route query parameter
+const route = useRoute()
+const guestName = computed(() => {
+  const name = route.query.to as string
+  return name ? decodeURIComponent(name).trim() : null
+})
 
 // Reactive state
 const isVisible = ref(true)
@@ -156,6 +174,9 @@ const handleEnterInvitation = () => {
   .gradient-text {
     font-size: 2rem !important;
   }
+  .gradient-text-guest {
+    font-size: 1.5rem !important;
+  }
   .font-dancing {
     font-size: 1.2rem !important;
   }
@@ -183,6 +204,14 @@ const handleEnterInvitation = () => {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 30px rgba(100, 116, 139, 0.1);
+}
+.light-mode .gradient-text-guest {
+  background: linear-gradient(45deg, #92400e, #b45309, #d97706, #f59e0b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(146, 64, 14, 0.2);
+  filter: drop-shadow(0 4px 12px rgba(146, 64, 14, 0.2));
 }
 .light-mode .font-dancing,
 .light-mode .font-great-vibes,
@@ -287,6 +316,15 @@ const handleEnterInvitation = () => {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.gradient-text-guest {
+  background: linear-gradient(45deg, #fbbf24, #f59e0b, #d97706, #92400e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(251, 191, 36, 0.4);
+  filter: drop-shadow(0 4px 12px rgba(251, 191, 36, 0.3));
 }
 
 .heart-beat {
