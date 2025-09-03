@@ -19,8 +19,9 @@
           </p>
         </div>
 
-        <!-- Gift Card -->
-        <div class="max-w-lg mx-auto mb-12 scroll-animate-scale scroll-animate-delay-1" ref="giftCardRef">
+        <!-- Gift Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12 scroll-animate-scale scroll-animate-delay-1" ref="giftCardRef">
+          <!-- Bank Transfer -->
           <div class="gift-card">
             <div class="flex items-center justify-center mb-6">
               <i class="fas fa-university text-2xl text-white/80 mr-3"></i>
@@ -39,6 +40,28 @@
             >
               <i class="fas fa-copy mr-2"></i>
               Salin Nomor Rekening
+            </button>
+          </div>
+
+          <!-- DANA E-Wallet -->
+          <div class="gift-card">
+            <div class="flex items-center justify-center mb-6">
+              <i class="fas fa-mobile-alt text-2xl text-white/80 mr-3"></i>
+              <h3 class="font-poppins text-xl font-semibold text-white">E-Wallet DANA</h3>
+            </div>
+            <div class="space-y-4">
+              <div class="text-white/70 font-poppins">DANA</div>
+              <div class="font-mono text-2xl md:text-3xl font-bold text-white tracking-wider">
+                +62 858-8730-6450
+              </div>
+              <div class="text-white/70 font-poppins">a.n. Jiyanto</div>
+            </div>
+            <button 
+              @click="copyToClipboard('+62 858-8730-6450')"
+              class="copy-btn mt-6"
+            >
+              <i class="fas fa-copy mr-2"></i>
+              Salin Nomor DANA
             </button>
           </div>
         </div>

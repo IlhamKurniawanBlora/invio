@@ -288,13 +288,13 @@ const scrollToNextSection = () => {
     
     // Use custom ease-in-out animation
     smoothScrollTo(offsetPosition, () => {
-      // After scrolling is complete, wait 3 seconds then continue (except gallery)
+      // After scrolling is complete, wait 7 seconds then continue (except gallery)
       scrollTimeout.value = setTimeout(() => {
         if (isAutoScrolling.value) {
           currentSectionIndex.value++;
           scrollToNextSection();
         }
-      }, 3000); // 3 second pause for regular sections
+      }, 7000); // 7 second pause for regular sections
     });
   } else {
     // If section not found, move to next
@@ -336,13 +336,13 @@ const scrollThroughGallery = () => {
   const targetPosition = Math.min(currentGalleryScrollPosition, galleryBottom - viewportHeight);
   
   smoothScrollTo(targetPosition, () => {
-    // After scrolling is complete, wait 4 seconds then continue in gallery
+    // After scrolling is complete, wait 7 seconds then continue in gallery
     scrollTimeout.value = setTimeout(() => {
       if (isAutoScrolling.value) {
         currentGalleryPosition.value++;
         scrollThroughGallery();
       }
-    }, 4000); // 4 second pause for gallery viewports
+    }, 7000); // 7 second pause for gallery viewports
   });
 };
 
@@ -467,7 +467,7 @@ const handleEnterInvitation = async () => {
   // Start auto scroll after a longer delay to let user see the first section
   setTimeout(() => {
     startAutoScroll();
-  }, 2500); // Increased to 2.5 seconds to let user appreciate the first section
+  }, 7000); // Increased to 7 seconds to let user appreciate the first section
 };
 
 // Expose functions to template if needed
