@@ -203,9 +203,23 @@ const cleanupAudio = () => {
   isPlaying.value = false;
 };
 
-// Auto scroll functionality with viewport-height movement
-const currentScrollPosition = ref(0);
+// Auto scroll functionality with section-by-section movement (special handling for gallery)
+const currentSectionIndex = ref(0);
+const currentGalleryPosition = ref(0);
 const scrollTimeout = ref<NodeJS.Timeout | null>(null);
+
+const getSections = () => {
+  return [
+    'quotes',
+    'couple', 
+    'event',
+    'gallery',
+    'gift',
+    'ucapan',
+    'social',
+    'footer'
+  ];
+};
 
 const startAutoScroll = () => {
   if (isAutoScrolling.value) return;
@@ -213,10 +227,24 @@ const startAutoScroll = () => {
   isAutoScrolling.value = true;
   document.documentElement.classList.add('auto-scrolling');
   
-  // Start from current position
-  currentScrollPosition.value = window.pageYOffset;
+  // Determine current section based on scroll position
+  const sections = getSections();
+  const currentScroll = window.pageYOffset;
+  let nearestSectionIndex = 0;
   
-  scrollToNextViewport();
+  for (let i = 0; i < sections.length; i++) {
+    const element = document.getElementById(sections[i]);
+    if (element) {
+      const elementTop = element.offsetTop - 80; // Account for header
+      if (currentScroll >= elementTop - (window.innerHeight / 2)) {
+        nearestSectionIndex = i + 1; // Move to next section
+      }
+    }
+  }
+  
+  currentSectionIndex.value = Math.min(nearestSectionIndex, sections.length - 1);
+  currentGalleryPosition.value = 0; // Reset gallery position
+  scrollToNextSection();
 };
 
 const startAutoScrollFromBeginning = () => {
@@ -226,48 +254,95 @@ const startAutoScrollFromBeginning = () => {
   
   isAutoScrolling.value = true;
   document.documentElement.classList.add('auto-scrolling');
-  currentScrollPosition.value = 0;
+  currentSectionIndex.value = 0;
+  currentGalleryPosition.value = 0;
   
-  // First scroll to top, then start viewport scrolling
-  smoothScrollTo(0, () => {
-    setTimeout(() => {
-      if (isAutoScrolling.value) {
-        scrollToNextViewport();
-      }
-    }, 3000); // 3 second pause after reaching top
-  });
+  scrollToNextSection();
 };
 
-const scrollToNextViewport = () => {
+const scrollToNextSection = () => {
   if (!isAutoScrolling.value) return;
   
-  const viewportHeight = window.innerHeight;
-  const documentHeight = document.documentElement.scrollHeight;
-  const maxScrollPosition = documentHeight - viewportHeight;
-  
-  // Calculate next scroll position (one viewport height down)
-  const nextPosition = currentScrollPosition.value + viewportHeight;
+  const sections = getSections();
   
   // If we've reached the end, stop auto scrolling
-  if (currentScrollPosition.value >= maxScrollPosition) {
+  if (currentSectionIndex.value >= sections.length) {
     stopAutoScroll();
     return;
   }
   
-  // Clamp to maximum scroll position
-  const targetPosition = Math.min(nextPosition, maxScrollPosition);
+  const sectionId = sections[currentSectionIndex.value];
   
-  // Use custom ease-in-out animation
-  smoothScrollTo(targetPosition, () => {
-    // Update current position
-    currentScrollPosition.value = targetPosition;
+  // Special handling for gallery section
+  if (sectionId === 'gallery') {
+    scrollThroughGallery();
+    return;
+  }
+  
+  const element = document.getElementById(sectionId);
+  
+  if (element) {
+    const headerOffset = 80; // Account for navigation bar
+    const elementPosition = element.offsetTop;
+    const offsetPosition = elementPosition - headerOffset;
     
-    // After scrolling is complete, wait 3 seconds then continue
+    // Use custom ease-in-out animation
+    smoothScrollTo(offsetPosition, () => {
+      // After scrolling is complete, wait 3 seconds then continue (except gallery)
+      scrollTimeout.value = setTimeout(() => {
+        if (isAutoScrolling.value) {
+          currentSectionIndex.value++;
+          scrollToNextSection();
+        }
+      }, 3000); // 3 second pause for regular sections
+    });
+  } else {
+    // If section not found, move to next
+    currentSectionIndex.value++;
+    scrollToNextSection();
+  }
+};
+
+const scrollThroughGallery = () => {
+  if (!isAutoScrolling.value) return;
+  
+  const galleryElement = document.getElementById('gallery');
+  if (!galleryElement) {
+    // If gallery not found, skip to next section
+    currentSectionIndex.value++;
+    scrollToNextSection();
+    return;
+  }
+  
+  const viewportHeight = window.innerHeight;
+  const headerOffset = 80;
+  const galleryTop = galleryElement.offsetTop - headerOffset;
+  const galleryHeight = galleryElement.offsetHeight;
+  const galleryBottom = galleryTop + galleryHeight;
+  
+  // Calculate current position within gallery
+  const currentGalleryScrollPosition = galleryTop + (currentGalleryPosition.value * viewportHeight);
+  
+  // Check if we've scrolled through the entire gallery
+  if (currentGalleryScrollPosition >= galleryBottom - viewportHeight) {
+    // Move to next section after gallery
+    currentSectionIndex.value++;
+    currentGalleryPosition.value = 0; // Reset for next time
+    scrollToNextSection();
+    return;
+  }
+  
+  // Scroll to next viewport within gallery
+  const targetPosition = Math.min(currentGalleryScrollPosition, galleryBottom - viewportHeight);
+  
+  smoothScrollTo(targetPosition, () => {
+    // After scrolling is complete, wait 4 seconds then continue in gallery
     scrollTimeout.value = setTimeout(() => {
       if (isAutoScrolling.value) {
-        scrollToNextViewport();
+        currentGalleryPosition.value++;
+        scrollThroughGallery();
       }
-    }, 3000); // 3 second pause
+    }, 4000); // 4 second pause for gallery viewports
   });
 };
 
@@ -316,8 +391,9 @@ const stopAutoScroll = () => {
     scrollTimeout.value = null;
   }
   
-  // Reset scroll position to current actual position
-  currentScrollPosition.value = window.pageYOffset;
+  // Reset positions
+  currentSectionIndex.value = 0;
+  currentGalleryPosition.value = 0;
 };
 
 // Enhanced smooth scroll to section
