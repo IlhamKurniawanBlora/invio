@@ -203,42 +203,121 @@ const cleanupAudio = () => {
   isPlaying.value = false;
 };
 
-// Auto scroll functionality
+// Auto scroll functionality with viewport-height movement
+const currentScrollPosition = ref(0);
+const scrollTimeout = ref<NodeJS.Timeout | null>(null);
+
 const startAutoScroll = () => {
   if (isAutoScrolling.value) return;
   
   isAutoScrolling.value = true;
   document.documentElement.classList.add('auto-scrolling');
   
-  // Start smooth auto scroll
-  const scrollStep = () => {
+  // Start from current position
+  currentScrollPosition.value = window.pageYOffset;
+  
+  scrollToNextViewport();
+};
+
+const startAutoScrollFromBeginning = () => {
+  if (isAutoScrolling.value) {
+    stopAutoScroll();
+  }
+  
+  isAutoScrolling.value = true;
+  document.documentElement.classList.add('auto-scrolling');
+  currentScrollPosition.value = 0;
+  
+  // First scroll to top, then start viewport scrolling
+  smoothScrollTo(0, () => {
+    setTimeout(() => {
+      if (isAutoScrolling.value) {
+        scrollToNextViewport();
+      }
+    }, 3000); // 3 second pause after reaching top
+  });
+};
+
+const scrollToNextViewport = () => {
+  if (!isAutoScrolling.value) return;
+  
+  const viewportHeight = window.innerHeight;
+  const documentHeight = document.documentElement.scrollHeight;
+  const maxScrollPosition = documentHeight - viewportHeight;
+  
+  // Calculate next scroll position (one viewport height down)
+  const nextPosition = currentScrollPosition.value + viewportHeight;
+  
+  // If we've reached the end, stop auto scrolling
+  if (currentScrollPosition.value >= maxScrollPosition) {
+    stopAutoScroll();
+    return;
+  }
+  
+  // Clamp to maximum scroll position
+  const targetPosition = Math.min(nextPosition, maxScrollPosition);
+  
+  // Use custom ease-in-out animation
+  smoothScrollTo(targetPosition, () => {
+    // Update current position
+    currentScrollPosition.value = targetPosition;
+    
+    // After scrolling is complete, wait 3 seconds then continue
+    scrollTimeout.value = setTimeout(() => {
+      if (isAutoScrolling.value) {
+        scrollToNextViewport();
+      }
+    }, 3000); // 3 second pause
+  });
+};
+
+const smoothScrollTo = (targetY: number, onComplete?: () => void) => {
+  const startY = window.pageYOffset;
+  const distance = targetY - startY;
+  const duration = 1200; // 1.2 second animation duration
+  let startTime: number | null = null;
+  
+  // Ease-in-out function
+  const easeInOut = (t: number): number => {
+    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+  };
+  
+  const scroll = (currentTime: number) => {
     if (!isAutoScrolling.value) return;
     
-    const scrollSpeed = 8; // pixels per frame (optimized for smoothness)
-    const currentScroll = window.pageYOffset;
-    const targetScroll = currentScroll + scrollSpeed;
+    if (startTime === null) startTime = currentTime;
+    const timeElapsed = currentTime - startTime;
+    const progress = Math.min(timeElapsed / duration, 1);
     
-    // Use smooth behavior for better visual effect
-    window.scrollTo({
-      top: targetScroll,
-      behavior: 'smooth'
-    });
+    // Apply ease-in-out timing function
+    const easedProgress = easeInOut(progress);
+    const currentY = startY + (distance * easedProgress);
     
-    // Continue scrolling if not at bottom
-    if (currentScroll < document.documentElement.scrollHeight - window.innerHeight) {
-      // Add slight delay for smoother animation
-      setTimeout(() => requestAnimationFrame(scrollStep), 16);
+    window.scrollTo(0, currentY);
+    
+    if (progress < 1) {
+      requestAnimationFrame(scroll);
     } else {
-      stopAutoScroll();
+      // Animation complete
+      if (onComplete) onComplete();
     }
   };
   
-  requestAnimationFrame(scrollStep);
+  requestAnimationFrame(scroll);
 };
 
 const stopAutoScroll = () => {
   isAutoScrolling.value = false;
   document.documentElement.classList.remove('auto-scrolling');
+  
+  // Clear any pending scroll timeout
+  if (scrollTimeout.value) {
+    clearTimeout(scrollTimeout.value);
+    scrollTimeout.value = null;
+  }
+  
+  // Reset scroll position to current actual position
+  currentScrollPosition.value = window.pageYOffset;
 };
 
 // Enhanced smooth scroll to section
@@ -270,14 +349,14 @@ onMounted(() => {
   }, 6000);
   
   // Add scroll event listener to stop auto scroll on manual interaction
-  let scrollTimeout: NodeJS.Timeout;
+  let manualScrollTimeout: NodeJS.Timeout;
   const handleManualScroll = () => {
     if (isAutoScrolling.value) {
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        // Only stop if user is actively scrolling
+      clearTimeout(manualScrollTimeout);
+      manualScrollTimeout = setTimeout(() => {
+        // Stop auto scroll immediately on manual interaction
         stopAutoScroll();
-      }, 150);
+      }, 100);
     }
   };
   
@@ -289,10 +368,19 @@ onMounted(() => {
       stopAutoScroll();
     }
   });
+  
+  // Also stop auto scroll on manual click navigation
+  window.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    if (target.closest('.nav-link, .scroll-to-section')) {
+      stopAutoScroll();
+    }
+  });
 });
 
 onUnmounted(() => {
   cleanupAudio();
+  stopAutoScroll(); // Clean up auto scroll timeouts
 });
 
 const handleEnterInvitation = async () => {
@@ -300,10 +388,10 @@ const handleEnterInvitation = async () => {
   await startMusic();
   showWelcome.value = false;
   
-  // Start auto scroll after a short delay
+  // Start auto scroll after a longer delay to let user see the first section
   setTimeout(() => {
     startAutoScroll();
-  }, 1000);
+  }, 2500); // Increased to 2.5 seconds to let user appreciate the first section
 };
 
 // Expose functions to template if needed
@@ -312,6 +400,7 @@ defineExpose({
   toggleMusic,
   isPlaying,
   startAutoScroll,
+  startAutoScrollFromBeginning,
   stopAutoScroll,
   scrollToSection
 });

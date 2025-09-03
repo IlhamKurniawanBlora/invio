@@ -132,4 +132,29 @@ html {
 .auto-scrolling {
   -ms-overflow-style: none;
   scrollbar-width: none;
+  scroll-behavior: auto; /* Disable browser smooth scroll during auto scroll */
+}
+
+.auto-scrolling::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth scroll for manual navigation */
+html:not(.auto-scrolling) {
+  scroll-behavior: smooth;
+}
+
+/* Section transition styles */
+.section-transition {
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Auto scroll indicator animation */
+@keyframes autoScrollPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.auto-scroll-active {
+  animation: autoScrollPulse 2s ease-in-out infinite;
 }
