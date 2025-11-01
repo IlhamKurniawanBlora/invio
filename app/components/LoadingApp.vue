@@ -9,7 +9,7 @@
       <!-- Logo Image (Circle Crop) -->
       <div class="flex justify-center mb-6">
         <img
-          src="/assets/images/weedingicon.png"
+          src="/images/weeding001.jpg"
           alt="Wedding Logo"
           class="w-28 h-28 md:w-36 md:h-36 rounded-full object-cover shadow-lg"
           style="object-position: center;"

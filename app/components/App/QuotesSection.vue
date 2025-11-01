@@ -57,7 +57,7 @@
         
         <!-- Wedding Date -->
         <div class="font-poppins text-base md:text-lg text-white/70 scroll-animate-fade-up scroll-animate-delay-3" ref="weddingDateRef">
-        07 Desember 2025 • 10:00 WIB
+        07 Desember 2025 • 09:00 WIB
         </div>
       </div>
       </div>
@@ -85,7 +85,7 @@ const countdownRef = ref<HTMLElement>()
 const weddingDateRef = ref<HTMLElement>()
 
 // Countdown state
-const targetDate = new Date('2025-12-07T10:00:00')
+const targetDate = new Date('2025-12-07T09:00:00')
 const timeLeft = ref({
   days: 0,
   hours: 0,

@@ -2,7 +2,7 @@
   <section class="py-16 text-center" ref="sectionRef">
     <div class="max-w-3xl mx-auto px-6">
       <div class="share-content" :class="{ 'animate-in': isVisible }">
-        <!-- Title -->
+        <!-- Judul -->
         <div class="mb-8">
           <h1 class="gradient-text font-great-vibes text-5xl md:text-6xl lg:text-7xl font-normal leading-tight">
             Bagikan Kebahagiaan
@@ -12,7 +12,7 @@
           </h2>
         </div>
 
-        <!-- Share Message Preview -->
+  <!-- Pratinjau Pesan Undangan -->
         <div class="share-preview mb-8">
           <h3 class="font-semibold text-lg mb-4 text-gray-800">
             Pesan yang akan dibagikan:
@@ -21,7 +21,7 @@
             <div class="text-center mb-4">
               <div class="flex items-center justify-center mb-2">
                 <Icon name="lucide:mosque" class="w-6 h-6 text-amber-700 mr-2" />
-                <strong class="text-lg text-amber-700">Serat Pawiwahan</strong>
+                <strong class="text-lg text-amber-700">Surat Undangan Pernikahan</strong>
                 <Icon name="lucide:mosque" class="w-6 h-6 text-amber-700 ml-2" />
               </div>
             </div>
@@ -38,11 +38,11 @@
                 </div>
                 <div class="flex items-center justify-center">
                   <Icon name="lucide:clock" class="w-4 h-4 mr-2 text-amber-600" />
-                  <span>Wektu: 10:00 WIB - Selesai</span>
+                  <span>Wektu: 09:00 WIB - Selesai</span>
                 </div>
                 <div class="flex items-center justify-center">
                   <Icon name="lucide:map-pin" class="w-4 h-4 mr-2 text-amber-600" />
-                  <span>Wonten griyanipun penganten putra</span>
+                  <span>Tempat: Di kediaman mempelai pria</span>
                 </div>
               </div>
             </div>
@@ -50,9 +50,8 @@
             <div class="paper-divider"></div>
             
             <div class="text-gray-600 leading-relaxed text-sm text-justify mb-4">
-              Kanthi rasa bekti lan pangabekti, kula nyuwun pangapunten menawi wonten kalepatan. 
-              Mugi-mugi panjenengan kersa rawuh wonten ing adicara pawiwahan punika kangge maringi 
-              berkah lan pangestu dhumateng kekalih penganten.
+              Dengan segala hormat dan kerendahan hati, kami memohon maaf apabila terdapat kesalahan. Kami mengundang Bapak/Ibu/Saudara/i untuk berkenan hadir dalam acara pernikahan kami, guna memberikan doa restu dan berkah kepada kedua mempelai.
+              <br /><br />
             </div>
             
             <div class="paper-divider-small"></div>
@@ -60,7 +59,7 @@
             <div class="text-center">
               <div class="flex items-center justify-center mb-2">
                 <Icon name="lucide:heart-handshake" class="w-4 h-4 mr-2 text-pink-500" />
-                <span class="text-gray-600 text-sm">Matur nuwun sanget</span>
+                <span class="text-gray-600 text-sm">Terima kasih sebesar-besarnya</span>
               </div>
               <div class="flex items-center justify-center text-blue-600">
                 <Icon name="lucide:link" class="w-4 h-4 mr-2" />
@@ -70,7 +69,7 @@
           </div>
         </div>
 
-        <!-- Social Share Buttons -->
+  <!-- Tombol Bagikan Sosial -->
         <div class="share-buttons mt-4">
           
           <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto mb-6 justify-center">
@@ -78,14 +77,16 @@
             <button 
               @click="shareToWhatsApp"
               class="share-btn whatsapp-btn"
+              aria-label="Bagikan ke WhatsApp"
             >
               <Icon name="logos:whatsapp-icon" class="w-8 h-8" />
             </button>
 
-            <!-- Copy Link Button -->
+            <!-- Tombol Salin Tautan -->
             <button 
               @click="copyLink"
               class="share-btn copy-btn"
+              aria-label="Salin tautan undangan"
             >
               <Icon name="lucide:link" class="w-8 h-8" />
             </button>
@@ -100,29 +101,29 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useToastApp } from '~/composables/useToastApp'
 
-// Refs
+// Ref elemen
 const sectionRef = ref<HTMLElement>()
 const isVisible = ref(false)
 
-// Toast composable
+// Komposabel toast
 const { success, error } = useToastApp()
 
 // Data
 const invitationUrl = 'https://jiyanto-nuraini-weeding-invitation.netlify.app/'
-const shareMessage = `🕌 Serat Pawiwahan 🕌
+const shareMessage = `💒 Undangan Pernikahan 💒
 
 Jiyanto & Nur Aini
 📅 Tanggal: 07 Desember 2025
-🕰️ Wektu: 10:00 WIB - Selesai
-📍 Wonten griyanipun penganten putra
+🕰️ Waktu: 09.00 WIB - Selesai
+📍 Tempat: Di kediaman mempelai pria
 
-Kanthi rasa bekti lan pangabekti, kula nyuwun pangapunten menawi wonten kalepatan. Mugi-mugi panjenengan kersa rawuh wonten ing adicara pawiwahan punika kangge maringi berkah lan pangestu dhumateng kekalih penganten.
+Dengan segala hormat dan kerendahan hati, kami memohon maaf apabila terdapat kesalahan. Kami mengundang Bapak/Ibu/Saudara/i untuk berkenan hadir dalam acara pernikahan kami, guna memberikan doa restu dan berkah kepada kedua mempelai.
 
-Matur nuwun sanget
+Terima kasih yang sebesar-besarnya.
 
 ${invitationUrl}`
 
-// Methods
+// Metode
 const shareToWhatsApp = () => {
   const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareMessage)}`
   window.open(whatsappUrl, '_blank')
@@ -138,7 +139,7 @@ const copyLink = async () => {
   }
 }
 
-// Intersection Observer for scroll animations
+// Intersection Observer untuk animasi saat digulir
 let observer: IntersectionObserver
 
 onMounted(() => {

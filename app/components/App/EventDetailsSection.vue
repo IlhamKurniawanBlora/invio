@@ -67,7 +67,7 @@ onMounted(() => {
                         </p>
                         <p class="flex items-center justify-center text-base lg:text-lg">
                             <i class="fas fa-clock mr-3 text-white/60"></i> 
-                            10:00 WIB - Selesai
+                            09:00 WIB - Selesai
                         </p>
                         <p class="flex items-center justify-center text-base lg:text-lg">
                             <i class="fas fa-home mr-3 text-white/60"></i> 

@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineNuxtConfig({
@@ -16,7 +15,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/google-fonts',
     '@nuxtjs/seo',
-    'nuxt-og-image', // ✅ ganti ini
+    'nuxt-og-image', 
   ],
 
   googleFonts: {
@@ -31,7 +30,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: 'Wedding Jiyanto dan Nur Aini',
+      title: 'Pernikahan Jiyanto dan Nur Aini',
       meta: [
         {
           name: 'description',
@@ -39,7 +38,7 @@ export default defineNuxtConfig({
         },
         {
           property: 'og:title',
-          content: 'Wedding Jiyanto & Nur Aini',
+          content: 'Pernikahan Jiyanto & Nur Aini',
         },
         {
           property: 'og:description',
@@ -47,7 +46,7 @@ export default defineNuxtConfig({
         },
         {
           property: 'og:image',
-          content: 'https://jiyanto-nuraini-weeding-invitation.netlify.app/og-image.png', // fallback kalau auto-generate belum dipakai
+          content: '#file:og-image.png', // fallback ke file lokal
         },
       ],
     },
@@ -65,6 +64,7 @@ export default defineNuxtConfig({
       props: {
         title: 'Wedding Jiyanto & Nur Aini',
         description: 'Undangan pernikahan resmi Jiyanto dan Nur Aini.',
+        image: '#file:og-image.png',
       },
     },
   },

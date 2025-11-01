@@ -10,6 +10,25 @@
   >
     <div class="text-center text-white px-6 max-w-4xl mx-auto">
       <!-- Floating Bubbles Background (mirip LoadingApp) -->
+      <!-- Background carousel (slide track) -->
+      <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute inset-0">
+          <div class="absolute inset-0 overflow-hidden">
+            <div class="h-full flex" :style="sliderStyle">
+              <div
+                v-for="(img, idx) in images"
+                :key="img + '-' + idx"
+                class="w-full h-full flex-shrink-0 bg-center bg-cover"
+                :style="{ backgroundImage: `url(${img})`, filter: 'brightness(0.62) saturate(0.95)' }"
+              ></div>
+            </div>
+          </div>
+          <!-- extra overlay to ensure text readability -->
+          <div class="absolute inset-0 bg-black/30 pointer-events-none"></div>
+        </div>
+      </div>
+
+      <!-- Floating Bubbles (over carousel) -->
       <div class="absolute inset-0 overflow-hidden pointer-events-none">
         <div
           v-for="(bubble, index) in bubbles"
@@ -20,12 +39,6 @@
       </div>
 
       <div class="relative z-10">
-        <!-- Couple Image -->
-        <div class="mb-8 mounting-animation" :class="{ 'slide-in-left': imageLoaded }">
-          <div class="w-32 h-32 mx-auto couple-image flex items-center justify-center">
-            <img src="/assets/images/weedinglogo.png" alt="Wedding Logo" class="w-full h-full object-cover rounded-full" />
-          </div>
-        </div>
 
         <!-- Main Title -->
         <div class="fade-in-up mounting-animation">
@@ -82,7 +95,8 @@
           <!-- Enter Invitation Button -->
           <button 
             @click="handleEnterInvitation"
-            class="elegant-button font-poppins text-slate-800 px-10 py-4 rounded-full font-medium text-lg relative z-10 tracking-wide flex items-center justify-center gap-3"
+            class="elegant-button font-poppins bg-white/95 text-slate-800 px-6 md:px-10 py-3 md:py-4 rounded-full font-medium text-base md:text-lg relative z-10 tracking-wide flex items-center justify-center gap-3 shadow-lg hover:scale-105 transition-transform"
+            aria-label="Buka Undangan"
           >
             <span class="relative z-10 flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail mr-2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 6-8.97 6.66a2 2 0 0 1-2.06 0L2 6"/></svg>
@@ -103,7 +117,7 @@
 
 <script setup lang="ts">
 
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, onUnmounted } from 'vue'
 
 const props = withDefaults(defineProps<{ welcomeTransform?: string; welcomeOpacity?: string; light?: boolean }>(), {
   welcomeTransform: 'translateY(0)',
@@ -150,12 +164,61 @@ const bubbles = ref(Array.from({ length: 14 }, () => {
   }
 }))
 
+// Carousel images (public folder -> accessible at /images/...)
+// Files discovered in the project: weeding001.jpg .. weeding005.jpg
+const images = ref<string[]>([
+  '/images/weeding001.jpg',
+  '/images/weeding002.jpg',
+  '/images/weeding003.jpg',
+  '/images/weeding004.jpg',
+  '/images/weeding005.jpg'
+])
+
+const currentIndex = ref(0)
+let intervalId: number | undefined
+
+// Slider style for smooth slide transition
+const sliderStyle = computed(() => ({
+  transform: `translateX(-${currentIndex.value * 100}%)`,
+  transition: 'transform 800ms cubic-bezier(.2,.8,.2,1)'
+}))
+
+// Preload images for smoother transition
+const preloadImages = () => {
+  images.value.forEach((src) => {
+    const img = new Image()
+    img.src = src
+  })
+}
+
+const startCarousel = (delay = 5000) => {
+  // rotate images every `delay` ms
+  intervalId = window.setInterval(() => {
+    currentIndex.value = (currentIndex.value + 1) % images.value.length
+  }, delay)
+}
+
+const stopCarousel = () => {
+  if (intervalId) {
+    clearInterval(intervalId)
+    intervalId = undefined
+  }
+}
+
 // Lifecycle
 onMounted(() => {
   // Simulate image loading with smooth transition
   setTimeout(() => {
     imageLoaded.value = true
   }, 300)
+
+  // Start carousel
+  preloadImages()
+  startCarousel(4500)
+})
+
+onUnmounted(() => {
+  stopCarousel()
 })
 
 // Methods
@@ -169,290 +232,43 @@ const handleEnterInvitation = () => {
 </script>
 
 <style scoped>
-/* Responsive improvements for mobile */
-@media (max-width: 640px) {
-  .gradient-text {
-    font-size: 2rem !important;
-  }
-  .gradient-text-guest {
-    font-size: 1.5rem !important;
-  }
-  .font-dancing {
-    font-size: 1.2rem !important;
-  }
-  .elegant-button {
-    padding-left: 1.5rem !important;
-    padding-right: 1.5rem !important;
-    font-size: 1rem !important;
-  }
-  .mb-8 {
-    margin-bottom: 1.5rem !important;
-  }
-  .max-w-2xl {
-    max-width: 95vw !important;
-  }
-}
-
-/* Light mode overrides */
-.light-mode {
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
-  color: #2d3748 !important;
-}
-.light-mode .gradient-text {
-  background: linear-gradient(45deg, #2d3748, #64748b, #cbd5e1);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 30px rgba(100, 116, 139, 0.1);
-}
-.light-mode .gradient-text-guest {
-  background: linear-gradient(45deg, #92400e, #b45309, #d97706, #f59e0b);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 30px rgba(146, 64, 14, 0.2);
-  filter: drop-shadow(0 4px 12px rgba(146, 64, 14, 0.2));
-}
-.light-mode .font-dancing,
-.light-mode .font-great-vibes,
-.light-mode .font-playfair,
-.light-mode .font-poppins {
-  color: #2d3748 !important;
-}
-.light-mode .elegant-button {
-  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-  color: #2d3748 !important;
-  border-color: #cbd5e1;
-}
-.light-mode .elegant-button:hover {
-  box-shadow: 0 15px 40px rgba(100, 116, 139, 0.15);
-  border-color: #94a3b8;
-}
-.light-mode .font-playfair {
-  color: #334155 !important;
-}
-.light-mode .bubble {
-  border: 1px solid #cbd5e1;
-  background: radial-gradient(circle, rgba(100,116,139,0.08) 0%, rgba(203,213,225,0.05) 70%, transparent 100%);
-}
-
-/* Animations */
-
-/* Main container animation on mount */
-.fixed {
-  animation: fadeInScale 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes fadeInScale {
-  0% {
-    opacity: 0;
-    transform: scale(0.95) translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-/* Mounting Animation Base Class */
-.mounting-animation {
-  will-change: transform, opacity;
-  backface-visibility: hidden;
-  perspective: 1000px;
-  transform-style: preserve-3d;
-}
-
-/* Bubble Animation (mirip LoadingApp) */
-.bubble {
-  animation: bubble-rise var(--animation-duration, 10s) cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 70%, transparent 100%);
-  border: 1px solid rgba(255,255,255,0.15);
-  backdrop-filter: blur(3px);
-  text-shadow: 0 0 15px currentColor;
-  will-change: transform, opacity;
-}
-
-@keyframes bubble-rise {
-  0% {
-    transform: translateY(0) translateX(0) scale(0.3) rotate(0deg);
-    opacity: 0;
-  }
-  3% {
-    opacity: 0.3;
-    transform: translateY(-3vh) translateX(calc(var(--drift-x) * 0.05)) scale(0.5) rotate(9deg);
-  }
-  15% {
-    opacity: 0.7;
-    transform: translateY(-15vh) translateX(calc(var(--drift-x) * 0.2)) scale(0.8) rotate(45deg);
-  }
-  35% {
-    opacity: 1;
-    transform: translateY(-35vh) translateX(calc(var(--drift-x) * 0.4)) scale(1) rotate(135deg);
-  }
-  60% {
-    opacity: 0.9;
-    transform: translateY(-60vh) translateX(calc(var(--drift-x) * 0.7)) scale(1.1) rotate(225deg);
-  }
-  85% {
-    opacity: 0.5;
-    transform: translateY(-85vh) translateX(calc(var(--drift-x) * 0.9)) scale(0.7) rotate(315deg);
-  }
-  97% {
-    opacity: 0.1;
-    transform: translateY(-97vh) translateX(var(--drift-x)) scale(0.4) rotate(350deg);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-110vh) translateX(var(--drift-x)) scale(0.2) rotate(360deg);
-  }
-}
-
-.gradient-text {
-  background: linear-gradient(45deg, #ffffff, #f8fafc, #e2e8f0);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
-}
-
-.gradient-text-guest {
-  background: linear-gradient(45deg, #fbbf24, #f59e0b, #d97706, #92400e);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 30px rgba(251, 191, 36, 0.4);
-  filter: drop-shadow(0 4px 12px rgba(251, 191, 36, 0.3));
-}
-
-.heart-beat {
-  animation: heartbeat 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-}
-
-@keyframes heartbeat {
-  0%, 100% { 
-    transform: scale(1); 
-    filter: brightness(1);
-  }
-  50% { 
-    transform: scale(1.1); 
-    filter: brightness(1.2);
-  }
-}
-
-.slide-in-left {
-  animation: slideInLeft 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes slideInLeft {
-  0% {
-    opacity: 0;
-    transform: translateX(-50px) scale(0.95);
-  }
-  50% {
-    opacity: 0.7;
-    transform: translateX(-10px) scale(0.98);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-}
-
+/* Text appearance animations used by template classes: fade-in-up, fade-in-up-delay-1/2/3, mounting-animation */
 .fade-in-up {
-  animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(12px);
+  animation: fadeInUp 700ms cubic-bezier(.2,.8,.2,1) forwards;
+  will-change: opacity, transform;
 }
-
-.fade-in-up-delay-1 {
-  animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
-  opacity: 0;
-  transform: translateY(30px);
-}
-
-.fade-in-up-delay-2 {
-  animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
-  opacity: 0;
-  transform: translateY(30px);
-}
-
-.fade-in-up-delay-3 {
-  animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
-  opacity: 0;
-  transform: translateY(30px);
-}
+.fade-in-up-delay-1 { animation-delay: 160ms; }
+.fade-in-up-delay-2 { animation-delay: 320ms; }
+.fade-in-up-delay-3 { animation-delay: 520ms; }
 
 @keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-  }
-  60% {
-    opacity: 0.8;
-    transform: translateY(-5px) scale(1.01);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.couple-image {
-  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, box-shadow;
+/* Small mounting animation for subtle scale + fade */
+.mounting-animation {
+  opacity: 0;
+  transform: translateY(6px) scale(.996);
+  animation: mounting 640ms cubic-bezier(.2,.8,.2,1) forwards;
+  will-change: opacity, transform;
 }
 
-.couple-image:hover {
-  transform: scale(1.05) rotate(2deg);
-  box-shadow: 0 20px 60px rgba(255, 255, 255, 0.4), 0 0 0 4px rgba(255, 255, 255, 0.1);
+@keyframes mounting {
+  from { opacity: 0; transform: translateY(6px) scale(.996); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.elegant-button {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(135deg, #ffffff, #f8fafc);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, box-shadow;
-}
-
-.elegant-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  transition: left 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.elegant-button:hover::before {
-  left: 100%;
-}
-
-.elegant-button:hover {
-  transform: translateY(-6px) scale(1.05);
-  box-shadow: 
-    0 25px 50px rgba(255, 255, 255, 0.3),
-    0 15px 30px rgba(255, 255, 255, 0.2),
-    0 0 0 3px rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.4);
-}
-
-.elegant-button:active {
-  transform: translateY(-2px) scale(1.02);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .ornament {
-    font-size: 1.5rem;
+/* Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .fade-in-up, .mounting-animation {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
+
 </style>
+
