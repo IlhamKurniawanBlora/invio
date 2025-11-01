@@ -30,7 +30,7 @@ useSeoMeta({
   ogTitle: 'Wedding Jiyanto & Nur Aini',
   description: 'Dengan penuh rasa syukur, kami mengundang Anda untuk menghadiri pernikahan kami.',
   ogDescription: 'Dengan penuh rasa syukur, kami mengundang Anda untuk menghadiri pernikahan kami.',
-  ogImage: 'https://jiyanto-nuraini-weeding-invitation.netlify.app/og-image.png',
+  ogImage: '#file:og-image.png',
   twitterCard: 'summary_large_image',
 })
 
