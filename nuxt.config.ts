@@ -15,7 +15,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/google-fonts',
     '@nuxtjs/seo',
-    'nuxt-og-image', 
+    'nuxt-og-image',
   ],
 
   googleFonts: {
@@ -37,39 +37,21 @@ export default defineNuxtConfig({
           content: 'Undangan Pernikahan Jiyanto dan Nur Aini',
         },
         {
-          property: 'og:title',
-          content: 'Pernikahan Jiyanto & Nur Aini',
+          name: 'keywords',
+          content: 'pernikahan, jiyanto, nur aini, undangan',
         },
-        {
-          property: 'og:description',
-          content:
-            'Dengan penuh rasa syukur dan kebahagiaan, kami mengundang Anda untuk hadir dan memberikan doa restu pada hari bahagia kami dalam pernikahan Jiyanto dan Nur Aini.',
-        },
-        {
-          property: 'og:image',
-          content:
-            'https://undangan-pernikahan-jiyanto-nuraini.vercel.app/og-image.png',
-        },
-        { name: 'twitter:card', content: 'summary_large_image' },
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       ],
     },
   },
 
   seo: {
-    siteName: 'Wedding Jiyanto & Nur Aini',
+    siteName: 'Pernikahan Jiyanto & Nur Aini',
+    siteUrl: 'https://undangan-pernikahan-jiyanto-nuraini.vercel.app',
     description: 'Undangan pernikahan resmi Jiyanto dan Nur Aini.',
     twitterCard: 'summary_large_image',
-  },
-
-  ogImage: {
-    defaults: {
-      component: 'OgImage',
-      props: {
-        title: 'Wedding Jiyanto & Nur Aini',
-        description: 'Undangan pernikahan resmi Jiyanto dan Nur Aini.',
-        image:
-          'https://undangan-pernikahan-jiyanto-nuraini.vercel.app/og-image.png',
-      },
-    },
+    ogImage: '/og-image.png',
   },
 })

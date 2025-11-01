@@ -11,21 +11,17 @@ import UcapanSection from '../components/App/UcapanSection.vue';
 import SocialShareSection from '../components/App/SocialShareSection.vue';
 import FooterSection from '../components/App/FooterSection.vue';
 
-// Import audio file - Nuxt 4 way
 import audioFile from '~/assets/music/Kabagyan-Sadewok.mp3';
 
-// State untuk loading dan welcome
 import { ref, onMounted, onUnmounted } from 'vue';
 const loading = ref(true);
 const showWelcome = ref(false);
 const isAutoScrolling = ref(false);
 
-// Shared music state
 const isPlaying = ref(false);
 const audioPlayer = ref<HTMLAudioElement | null>(null);
 const isAudioInitialized = ref(false);
 
-// Shared music control functions
 const initializeAudio = () => {
   if (!audioPlayer.value && !isAudioInitialized.value) {
     try {
@@ -183,7 +179,6 @@ const toggleMusic = async () => {
   }
 };
 
-// Cleanup function
 const cleanupAudio = () => {
   if (audioPlayer.value) {
     audioPlayer.value.pause();
@@ -194,7 +189,6 @@ const cleanupAudio = () => {
   isPlaying.value = false;
 };
 
-// Auto scroll functionality with section-by-section movement (special handling for gallery)
 const currentSectionIndex = ref(0);
 const currentGalleryPosition = ref(0);
 const scrollTimeout = ref<NodeJS.Timeout | null>(null);
