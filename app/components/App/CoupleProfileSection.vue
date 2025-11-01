@@ -45,7 +45,7 @@
             <!-- Jiyanto -->
             <div class="text-center scroll-animate-fade-left scroll-animate-delay-1" ref="jiyantoRef">
               <div class="w-48 h-48 mx-auto rounded-full mb-6 overflow-hidden border-4 border-white/30 shadow-2xl">
-                <img src="/assets/images/jiyanto.png" alt="Jiyanto" class="w-full h-full object-cover" />
+                <img src="/profile/jiyanto.jpg" alt="Jiyanto" class="w-full h-full object-cover" />
               </div>
               <h3 class="gradient-text font-great-vibes text-3xl lg:text-4xl font-normal mb-4">Jiyanto</h3>
               <div class="text-white/80 text-sm lg:text-base mb-2 font-poppins">Putra dari Bapak Panijan & Ibu Pasini</div>
@@ -55,7 +55,7 @@
             <!-- Nur Aini -->
             <div class="text-center scroll-animate-fade-right scroll-animate-delay-2" ref="nurAiniRef">
               <div class="w-48 h-48 mx-auto rounded-full mb-6 overflow-hidden border-4 border-white/30 shadow-2xl">
-                <img src="/assets/images/nuraini.png" alt="Nur Aini" class="w-full h-full object-cover" />
+                <img src="/profile/nuraini.jpg" alt="Nur Aini" class="w-full h-full object-cover" />
               </div>
               <h3 class="gradient-text font-great-vibes text-3xl lg:text-4xl font-normal mb-4">Nur Aini</h3>
               <div class="text-white/80 text-sm lg:text-base mb-2 font-poppins">Putri dari Bapak Witam Ahmad Ihwani & Ibu Arwen</div>
@@ -70,7 +70,7 @@
         <!-- Jiyanto -->
         <div class="text-center mb-12 scroll-animate-fade-up scroll-animate-delay-1" ref="jiyantoMobileRef">
           <div class="w-40 h-40 mx-auto rounded-full mb-6 overflow-hidden border-4 border-white/30 shadow-2xl">
-            <img src="/assets/images/jiyanto.png" alt="Jiyanto" class="w-full h-full object-cover" />
+            <img src="/profile/jiyanto.jpg" alt="Jiyanto" class="w-full h-full object-cover" />
           </div>
           <h3 class="gradient-text font-great-vibes text-2xl font-normal mb-3">Jiyanto</h3>
           <div class="text-white/80 text-sm mb-2 font-poppins">Putra dari Bapak Panijan & Ibu Pasini</div>
@@ -87,7 +87,7 @@
         <!-- Nur Aini -->
         <div class="text-center scroll-animate-fade-up scroll-animate-delay-3" ref="nurAiniMobileRef">
           <div class="w-40 h-40 mx-auto rounded-full mb-6 overflow-hidden border-4 border-white/30 shadow-2xl">
-            <img src="/assets/images/nuraini.png" alt="Nur Aini" class="w-full h-full object-cover" />
+            <img src="/profile/nuraini.jpg" alt="Nur Aini" class="w-full h-full object-cover" />
           </div>
           <h3 class="gradient-text font-great-vibes text-2xl font-normal mb-3">Nur Aini</h3>
           <div class="text-white/80 text-sm mb-2 font-poppins">Putri dari Bapak Witam Ahmad Ihwani & Ibu Arwen</div>
