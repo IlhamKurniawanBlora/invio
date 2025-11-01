@@ -46,7 +46,7 @@ export default defineNuxtConfig({
         },
         {
           property: 'og:image',
-          content: '#file:og-image.png', // fallback ke file lokal
+          content: 'https://undangan-pernikahan-jiyanto-nuraini.vercel.app/og-image.png', // fallback ke file lokal
         },
       ],
     },
@@ -64,7 +64,7 @@ export default defineNuxtConfig({
       props: {
         title: 'Wedding Jiyanto & Nur Aini',
         description: 'Undangan pernikahan resmi Jiyanto dan Nur Aini.',
-        image: '#file:og-image.png',
+        image: 'https://undangan-pernikahan-jiyanto-nuraini.vercel.app/og-image.png',
       },
     },
   },

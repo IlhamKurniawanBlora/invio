@@ -30,7 +30,7 @@ useSeoMeta({
   ogTitle: 'Wedding Jiyanto & Nur Aini',
   description: 'Dengan penuh rasa syukur, kami mengundang Anda untuk menghadiri pernikahan kami.',
   ogDescription: 'Dengan penuh rasa syukur, kami mengundang Anda untuk menghadiri pernikahan kami.',
-  ogImage: '#file:og-image.png',
+  ogImage: 'https://undangan-pernikahan-jiyanto-nuraini.vercel.app/og-image.png',
   twitterCard: 'summary_large_image',
 })
 
