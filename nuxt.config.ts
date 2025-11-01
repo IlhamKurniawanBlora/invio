@@ -34,7 +34,7 @@ export default defineNuxtConfig({
       meta: [
         {
           name: 'description',
-          content: 'Undangan Pernikahan Jiyanto dan Nur Ainii',
+          content: 'Undangan Pernikahan Jiyanto dan Nur Aini',
         },
         {
           property: 'og:title',
@@ -42,12 +42,15 @@ export default defineNuxtConfig({
         },
         {
           property: 'og:description',
-          content: 'Dengan penuh rasa syukur, kami mengundang Anda untuk menghadiri pernikahan kami.',
+          content:
+            'Dengan penuh rasa syukur dan kebahagiaan, kami mengundang Anda untuk hadir dan memberikan doa restu pada hari bahagia kami dalam pernikahan Jiyanto dan Nur Aini.',
         },
         {
           property: 'og:image',
-          content: 'https://undangan-pernikahan-jiyanto-nuraini.vercel.app/og-image.png', // fallback ke file lokal
+          content:
+            'https://undangan-pernikahan-jiyanto-nuraini.vercel.app/og-image.png',
         },
+        { name: 'twitter:card', content: 'summary_large_image' },
       ],
     },
   },
@@ -64,7 +67,8 @@ export default defineNuxtConfig({
       props: {
         title: 'Wedding Jiyanto & Nur Aini',
         description: 'Undangan pernikahan resmi Jiyanto dan Nur Aini.',
-        image: 'https://undangan-pernikahan-jiyanto-nuraini.vercel.app/og-image.png',
+        image:
+          'https://undangan-pernikahan-jiyanto-nuraini.vercel.app/og-image.png',
       },
     },
   },
