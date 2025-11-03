@@ -20,49 +20,75 @@
         </div>
 
         <!-- Gift Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12 scroll-animate-scale scroll-animate-delay-1" ref="giftCardRef">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12 scroll-animate-scale scroll-animate-delay-1" ref="giftCardRef">
           <!-- Bank Transfer -->
-          <div class="gift-card">
-            <div class="flex items-center justify-center mb-6">
-              <i class="fas fa-university text-2xl text-white/80 mr-3"></i>
-              <h3 class="font-poppins text-xl font-semibold text-white">Bank Transfer</h3>
+          <div class="gift-card bg-gradient-to-br from-white/10 to-white/5 rounded-lg p-8 shadow-md border border-white/20 backdrop-blur-md relative overflow-hidden">
+            <!-- Decorative elements -->
+            <div class="absolute top-0 right-0 w-20 h-20 opacity-5">
+              <img src="/wedding.png" alt="Decoration" class="w-full h-full object-cover"/>
             </div>
-            <div class="space-y-4">
-              <div class="text-white/70 font-poppins">Bank BRI</div>
-              <div class="font-mono text-2xl md:text-3xl font-bold text-white tracking-wider">
-                378401018627530
+            <div class="absolute bottom-0 left-0 w-16 h-16 opacity-5 transform scale-x-[-1]">
+              <img src="/wedding.png" alt="Decoration" class="w-full h-full object-cover"/>
+            </div>
+            
+            <div class="relative z-10">
+              <div class="flex items-center justify-center mb-6">
+                <i class="fas fa-university text-2xl text-white/80 mr-3"></i>
+                <h3 class="font-poppins text-xl font-semibold text-white">Bank Transfer</h3>
               </div>
-              <div class="text-white/70 font-poppins">a.n. Jiyanto</div>
+              <div class="space-y-4">
+                <div class="text-white/70 font-poppins">Bank BRI</div>
+                <div class="font-mono text-2xl md:text-3xl font-bold text-white tracking-wider">
+                  378401018627530
+                </div>
+                <div class="text-white/70 font-poppins">a.n. Jiyanto</div>
+              </div>
+              <button 
+                @click="copyToClipboard('378401018627530')"
+                class="copy-btn mt-6 inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-white/20 via-white/10 to-white/20 text-white font-semibold rounded-full hover:shadow-lg transition-all duration-300 transform hover:scale-105 shadow-md border border-white/30 group overflow-hidden relative backdrop-blur-sm"
+              >
+                <!-- Glossy overlay -->
+                <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                
+                <i class="fas fa-copy relative z-10"></i>
+                <span class="relative z-10">Salin Rekening</span>
+              </button>
             </div>
-            <button 
-              @click="copyToClipboard('378401018627530')"
-              class="copy-btn mt-6"
-            >
-              <i class="fas fa-copy mr-2"></i>
-              Salin Nomor Rekening
-            </button>
           </div>
 
           <!-- DANA E-Wallet -->
-          <div class="gift-card">
-            <div class="flex items-center justify-center mb-6">
-              <i class="fas fa-mobile-alt text-2xl text-white/80 mr-3"></i>
-              <h3 class="font-poppins text-xl font-semibold text-white">E-Wallet DANA</h3>
+          <div class="gift-card bg-gradient-to-br from-white/10 to-white/5 rounded-lg p-8 shadow-md border border-white/20 backdrop-blur-md relative overflow-hidden">
+            <!-- Decorative elements -->
+            <div class="absolute top-0 right-0 w-20 h-20 opacity-5">
+              <img src="/wedding.png" alt="Decoration" class="w-full h-full object-cover"/>
             </div>
-            <div class="space-y-4">
-              <div class="text-white/70 font-poppins">DANA</div>
-              <div class="font-mono text-2xl md:text-3xl font-bold text-white tracking-wider">
-                +62 858-8730-6450
+            <div class="absolute bottom-0 left-0 w-16 h-16 opacity-5 transform scale-x-[-1]">
+              <img src="/wedding.png" alt="Decoration" class="w-full h-full object-cover"/>
+            </div>
+            
+            <div class="relative z-10">
+              <div class="flex items-center justify-center mb-6">
+                <i class="fas fa-mobile-alt text-2xl text-white/80 mr-3"></i>
+                <h3 class="font-poppins text-xl font-semibold text-white">E-Wallet DANA</h3>
               </div>
-              <div class="text-white/70 font-poppins">a.n. Jiyanto</div>
+              <div class="space-y-4">
+                <div class="text-white/70 font-poppins">DANA</div>
+                <div class="font-mono text-2xl md:text-3xl font-bold text-white tracking-wider">
+                  +62 858-8730-6450
+                </div>
+                <div class="text-white/70 font-poppins">a.n. Jiyanto</div>
+              </div>
+              <button 
+                @click="copyToClipboard('+62 858-8730-6450')"
+                class="copy-btn mt-6 inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-white/20 via-white/10 to-white/20 text-white font-semibold rounded-full hover:shadow-lg transition-all duration-300 transform hover:scale-105 shadow-md border border-white/30 group overflow-hidden relative backdrop-blur-sm"
+              >
+                <!-- Glossy overlay -->
+                <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                
+                <i class="fas fa-copy relative z-10"></i>
+                <span class="relative z-10">Salin Nomor</span>
+              </button>
             </div>
-            <button 
-              @click="copyToClipboard('+62 858-8730-6450')"
-              class="copy-btn mt-6"
-            >
-              <i class="fas fa-copy mr-2"></i>
-              Salin Nomor DANA
-            </button>
           </div>
         </div>
 
@@ -147,55 +173,50 @@ onMounted(() => {
   50% { transform: scale(1.1); }
 }
 
-/* Animation utilities */
-.fade-in-up {
-  animation: fadeInUp 1s ease-out forwards;
-}
-
-.fade-in-up-delay-1 {
-  animation: fadeInUp 1s ease-out 0.5s forwards;
+/* Scroll animation classes */
+.scroll-animate-fade-up {
   opacity: 0;
   transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.fade-in-up-delay-2 {
-  animation: fadeInUp 1s ease-out 1s forwards;
+.scroll-animate-fade-up.is-visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.scroll-animate-scale {
   opacity: 0;
-  transform: translateY(30px);
+  transform: scale(0.8);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.fade-in-up-delay-3 {
-  animation: fadeInUp 1s ease-out 1.5s forwards;
-  opacity: 0;
-  transform: translateY(30px);
+.scroll-animate-scale.is-visible {
+  opacity: 1 !important;
+  transform: scale(1) !important;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.scroll-animate-delay-1 {
+  transition-delay: 0.2s !important;
+}
+
+.scroll-animate-delay-2 {
+  transition-delay: 0.4s !important;
+}
+
+.scroll-animate-delay-3 {
+  transition-delay: 0.6s !important;
 }
 
 /* Gift Card */
 .gift-card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  border-radius: 12px;
-  padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
 
 .gift-card:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-5px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06)) !important;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15) !important;
 }
 
 /* Copy Button */
@@ -231,6 +252,12 @@ onMounted(() => {
   
   .font-mono {
     font-size: 1.5rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .gift-card {
+    padding: 1.5rem;
   }
 }
 </style>

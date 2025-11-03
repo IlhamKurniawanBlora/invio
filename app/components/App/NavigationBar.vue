@@ -41,7 +41,7 @@
 
       <!-- Scroll to Top Button -->
       <button
-        @click="scrollToTop"
+        @click="handleScrollToTop"
         class="p-2 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all duration-300"
         title="Scroll to Top"
       >
@@ -64,6 +64,7 @@ const props = defineProps<{
   isAutoScrolling?: boolean;
   stopAutoScroll?: () => void;
   startAutoScroll?: () => void;
+  scrollToTop?: () => void;
 }>()
 
 // Auto scroll toggle function
@@ -75,14 +76,9 @@ const handleAutoScrollToggle = () => {
   }
 }
 
-// Scroll to top function
-const scrollToTop = () => {
-  if (typeof window !== 'undefined') {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    })
-  }
+// Scroll to top function using smooth animation
+const handleScrollToTop = () => {
+  props.scrollToTop?.()
 }
 
 onUnmounted(() => {

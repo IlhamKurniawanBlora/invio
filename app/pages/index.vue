@@ -14,6 +14,7 @@ import FooterSection from '../components/App/FooterSection.vue';
 import audioFile from '~/assets/music/Kabagyan-Sadewok.mp3';
 
 import { ref, onMounted, onUnmounted } from 'vue';
+
 const loading = ref(true);
 const showWelcome = ref(false);
 const isAutoScrolling = ref(false);
@@ -22,15 +23,15 @@ const isPlaying = ref(false);
 const audioPlayer = ref<HTMLAudioElement | null>(null);
 const isAudioInitialized = ref(false);
 
+// ============ AUDIO FUNCTIONS ============
 const initializeAudio = () => {
   if (!audioPlayer.value && !isAudioInitialized.value) {
     try {
-      // Use imported audio file or try multiple paths
       const audioSources = [
-        audioFile, // Vite imported asset
-        '/music/Kabagyan-Sadewok.mp3', // Public folder
-        '/_nuxt/assets/music/Kabagyan-Sadewok.mp3', // Build path
-        '/assets/music/Kabagyan-Sadewok.mp3' // Direct assets
+        audioFile,
+        '/music/Kabagyan-Sadewok.mp3',
+        '/_nuxt/assets/music/Kabagyan-Sadewok.mp3',
+        '/assets/music/Kabagyan-Sadewok.mp3'
       ];
       
       audioPlayer.value = new Audio();
@@ -38,7 +39,6 @@ const initializeAudio = () => {
       audioPlayer.value.volume = 0.3;
       audioPlayer.value.preload = 'auto';
       
-      // Try loading first available source
       let sourceLoaded = false;
       for (const source of audioSources) {
         if (source && !sourceLoaded) {
@@ -48,15 +48,13 @@ const initializeAudio = () => {
         }
       }
       
-      // Handle audio events
       audioPlayer.value.addEventListener('loadeddata', () => {
-        console.log('Audio loaded successfully from:', audioPlayer.value?.src);
+        console.log('Audio loaded successfully');
         isAudioInitialized.value = true;
       });
 
-      audioPlayer.value.addEventListener('error', (e) => {
-        console.error('Audio error with source:', audioPlayer.value?.src, e);
-        // Try next source or fallback
+      audioPlayer.value.addEventListener('error', () => {
+        console.error('Audio error');
         tryFallbackSources();
       });
       
@@ -70,10 +68,6 @@ const initializeAudio = () => {
       
       audioPlayer.value.addEventListener('play', () => {
         isPlaying.value = true;
-      });
-
-      audioPlayer.value.addEventListener('canplay', () => {
-        console.log('Audio can play');
       });
       
     } catch (error) {
@@ -103,15 +97,12 @@ const tryFallbackSources = () => {
         currentIndex++;
         if (currentIndex < fallbackSources.length) {
           setTimeout(tryNext, 100);
-        } else {
-          console.error('All audio sources failed');
         }
       };
       
       const onLoad = () => {
         audioPlayer.value?.removeEventListener('loadeddata', onLoad);
         audioPlayer.value?.removeEventListener('error', onError);
-        console.log('Fallback source loaded successfully');
         isAudioInitialized.value = true;
       };
       
@@ -127,7 +118,6 @@ const tryFallbackSources = () => {
 const startMusic = async () => {
   if (!isAudioInitialized.value) {
     initializeAudio();
-    // Wait a bit for initialization
     await new Promise(resolve => setTimeout(resolve, 500));
   }
   
@@ -137,10 +127,7 @@ const startMusic = async () => {
   }
   
   try {
-    // Reset audio to beginning
     audioPlayer.value.currentTime = 0;
-    
-    // Play audio with user gesture
     const playPromise = audioPlayer.value.play();
     
     if (playPromise !== undefined) {
@@ -189,9 +176,10 @@ const cleanupAudio = () => {
   isPlaying.value = false;
 };
 
+// ============ IMPROVED SCROLL FUNCTIONS ============
 const currentSectionIndex = ref(0);
 const currentGalleryPosition = ref(0);
-const scrollTimeout = ref<NodeJS.Timeout | null>(null);
+let scrollTimeout: NodeJS.Timeout | null = null;
 
 const getSections = () => {
   return [
@@ -206,83 +194,94 @@ const getSections = () => {
   ];
 };
 
-const startAutoScroll = () => {
-  if (isAutoScrolling.value) return;
-  
-  isAutoScrolling.value = true;
-  document.documentElement.classList.add('auto-scrolling');
-  
-  // Determine current section based on scroll position
-  const sections = getSections();
-  const currentScroll = window.pageYOffset;
-  let nearestSectionIndex = 0;
-  
-  for (let i = 0; i < sections.length; i++) {
-    const element = document.getElementById(sections[i]);
-    if (element) {
-      const elementTop = element.offsetTop - 80; // Account for header
-      if (currentScroll >= elementTop - (window.innerHeight / 2)) {
-        nearestSectionIndex = i + 1; // Move to next section
-      }
-    }
-  }
-  
-  currentSectionIndex.value = Math.min(nearestSectionIndex, sections.length - 1);
-  currentGalleryPosition.value = 0; // Reset gallery position
-  scrollToNextSection();
+// Easing function untuk smooth animation
+const easeInOutCubic = (t: number): number => {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 };
 
-const startAutoScrollFromBeginning = () => {
-  if (isAutoScrolling.value) {
-    stopAutoScroll();
+// Smooth scroll dengan RAF untuk performa optimal
+const smoothScrollTo = (
+  targetY: number,
+  duration: number = 1800,
+  onComplete?: () => void,
+  checkAutoScroll: boolean = true
+): void => {
+  const startY = window.pageYOffset;
+  const distance = targetY - startY;
+
+  if (Math.abs(distance) < 1) {
+    if (onComplete) onComplete();
+    return;
   }
-  
-  isAutoScrolling.value = true;
-  document.documentElement.classList.add('auto-scrolling');
-  currentSectionIndex.value = 0;
-  currentGalleryPosition.value = 0;
-  
-  scrollToNextSection();
+
+  let startTime: number | null = null;
+  const maxY = document.documentElement.scrollHeight - window.innerHeight;
+  const finalY = Math.min(Math.max(targetY, 0), maxY);
+
+  const scroll = (currentTime: number) => {
+    // Hanya check isAutoScrolling jika checkAutoScroll adalah true
+    if (checkAutoScroll && !isAutoScrolling.value) return;
+
+    if (startTime === null) startTime = currentTime;
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+
+    const easeProgress = easeInOutCubic(progress);
+    const currentY = startY + distance * easeProgress;
+
+    window.scrollTo({
+      top: currentY,
+      left: 0
+    });
+
+    if (progress < 1) {
+      requestAnimationFrame(scroll);
+    } else {
+      window.scrollTo(0, finalY);
+      if (onComplete) {
+        setTimeout(onComplete, 50);
+      }
+    }
+  };
+
+  requestAnimationFrame(scroll);
 };
 
 const scrollToNextSection = () => {
   if (!isAutoScrolling.value) return;
-  
+
   const sections = getSections();
-  
-  // If we've reached the end, stop auto scrolling
+
   if (currentSectionIndex.value >= sections.length) {
     stopAutoScroll();
     return;
   }
-  
+
   const sectionId = sections[currentSectionIndex.value];
-  
-  // Special handling for gallery section
+
   if (sectionId === 'gallery') {
     scrollThroughGallery();
     return;
   }
-  
+
   const element = document.getElementById(sectionId);
-  
+
   if (element) {
-    const headerOffset = 80; // Account for navigation bar
+    const headerOffset = 80;
     const elementPosition = element.offsetTop;
     const offsetPosition = elementPosition - headerOffset;
-    
-    // Use custom ease-in-out animation
-    smoothScrollTo(offsetPosition, () => {
-      // After scrolling is complete, wait 7 seconds then continue (except gallery)
-      scrollTimeout.value = setTimeout(() => {
-        if (isAutoScrolling.value) {
-          currentSectionIndex.value++;
-          scrollToNextSection();
-        }
-      }, 7000); // 7 second pause for regular sections
+
+    smoothScrollTo(offsetPosition, 1800, () => {
+      if (isAutoScrolling.value) {
+        currentSectionIndex.value++;
+        scrollTimeout = setTimeout(() => {
+          if (isAutoScrolling.value) {
+            scrollToNextSection();
+          }
+        }, 4000); // 4 detik pause
+      }
     });
   } else {
-    // If section not found, move to next
     currentSectionIndex.value++;
     scrollToNextSection();
   }
@@ -290,138 +289,132 @@ const scrollToNextSection = () => {
 
 const scrollThroughGallery = () => {
   if (!isAutoScrolling.value) return;
-  
+
   const galleryElement = document.getElementById('gallery');
   if (!galleryElement) {
-    // If gallery not found, skip to next section
     currentSectionIndex.value++;
     scrollToNextSection();
     return;
   }
-  
+
+  const maxGalleryMoves = 5;
+
+  if (currentGalleryPosition.value >= maxGalleryMoves) {
+    currentSectionIndex.value++;
+    currentGalleryPosition.value = 0;
+    scrollToNextSection();
+    return;
+  }
+
   const viewportHeight = window.innerHeight;
   const headerOffset = 80;
   const galleryTop = galleryElement.offsetTop - headerOffset;
-  const galleryHeight = galleryElement.offsetHeight;
-  const galleryBottom = galleryTop + galleryHeight;
-  
-  // Calculate current position within gallery
-  const currentGalleryScrollPosition = galleryTop + (currentGalleryPosition.value * viewportHeight);
-  
-  // Check if we've scrolled through the entire gallery
-  if (currentGalleryScrollPosition >= galleryBottom - viewportHeight) {
-    // Move to next section after gallery
-    currentSectionIndex.value++;
-    currentGalleryPosition.value = 0; // Reset for next time
-    scrollToNextSection();
-    return;
-  }
-  
-  // Scroll to next viewport within gallery
-  const targetPosition = Math.min(currentGalleryScrollPosition, galleryBottom - viewportHeight);
-  
-  smoothScrollTo(targetPosition, () => {
-    // After scrolling is complete, wait 7 seconds then continue in gallery
-    scrollTimeout.value = setTimeout(() => {
-      if (isAutoScrolling.value) {
-        currentGalleryPosition.value++;
-        scrollThroughGallery();
-      }
-    }, 7000); // 7 second pause for gallery viewports
+  const targetPosition = galleryTop + currentGalleryPosition.value * viewportHeight;
+
+  smoothScrollTo(targetPosition, 1800, () => {
+    if (isAutoScrolling.value) {
+      currentGalleryPosition.value++;
+      scrollTimeout = setTimeout(() => {
+        if (isAutoScrolling.value) {
+          scrollThroughGallery();
+        }
+      }, 4000); // 4 detik pause
+    }
   });
 };
 
-const smoothScrollTo = (targetY: number, onComplete?: () => void) => {
-  const startY = window.pageYOffset;
-  const distance = targetY - startY;
-  const duration = 1200; // 1.2 second animation duration
-  let startTime: number | null = null;
-  
-  // Ease-in-out function
-  const easeInOut = (t: number): number => {
-    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-  };
-  
-  const scroll = (currentTime: number) => {
-    if (!isAutoScrolling.value) return;
-    
-    if (startTime === null) startTime = currentTime;
-    const timeElapsed = currentTime - startTime;
-    const progress = Math.min(timeElapsed / duration, 1);
-    
-    // Apply ease-in-out timing function
-    const easedProgress = easeInOut(progress);
-    const currentY = startY + (distance * easedProgress);
-    
-    window.scrollTo(0, currentY);
-    
-    if (progress < 1) {
-      requestAnimationFrame(scroll);
-    } else {
-      // Animation complete
-      if (onComplete) onComplete();
+const startAutoScroll = () => {
+  if (isAutoScrolling.value) return;
+
+  isAutoScrolling.value = true;
+  document.documentElement.classList.add('auto-scrolling');
+
+  const sections = getSections();
+  const currentScroll = window.pageYOffset;
+  let nearestSectionIndex = 0;
+
+  for (let i = 0; i < sections.length; i++) {
+    const sectionId = sections[i];
+    if (sectionId) {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        const elementTop = element.offsetTop - 80;
+        if (currentScroll >= elementTop - window.innerHeight / 2) {
+          nearestSectionIndex = i + 1;
+        }
+      }
     }
-  };
-  
-  requestAnimationFrame(scroll);
+  }
+
+  currentSectionIndex.value = Math.min(nearestSectionIndex, sections.length - 1);
+  currentGalleryPosition.value = 0;
+  scrollToNextSection();
+};
+
+const startAutoScrollFromBeginning = () => {
+  if (isAutoScrolling.value) {
+    stopAutoScroll();
+  }
+
+  isAutoScrolling.value = true;
+  document.documentElement.classList.add('auto-scrolling');
+  currentSectionIndex.value = 0;
+  currentGalleryPosition.value = 0;
+
+  scrollToNextSection();
 };
 
 const stopAutoScroll = () => {
   isAutoScrolling.value = false;
   document.documentElement.classList.remove('auto-scrolling');
-  
-  // Clear any pending scroll timeout
-  if (scrollTimeout.value) {
-    clearTimeout(scrollTimeout.value);
-    scrollTimeout.value = null;
+
+  if (scrollTimeout) {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = null;
   }
-  
-  // Reset positions
+
   currentSectionIndex.value = 0;
   currentGalleryPosition.value = 0;
 };
 
-// Enhanced smooth scroll to section
 const scrollToSection = (sectionId: string) => {
-  stopAutoScroll(); // Stop auto scroll when user manually navigates
-  
+  stopAutoScroll();
+
   const element = document.getElementById(sectionId);
   if (element) {
-    const headerOffset = 80; // Account for navigation bar
+    const headerOffset = 80;
     const elementPosition = element.offsetTop;
     const offsetPosition = elementPosition - headerOffset;
 
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: 'smooth'
-    });
+    smoothScrollTo(offsetPosition, 1200);
   }
 };
 
+const scrollToTop = () => {
+  stopAutoScroll();
+  smoothScrollTo(0, 1200, undefined, false);
+};
+
 onMounted(() => {
-  // Initialize audio early
   setTimeout(() => {
     initializeAudio();
   }, 100);
-  
+
   setTimeout(() => {
     loading.value = false;
     showWelcome.value = true;
   }, 6000);
-  
-  // Add scroll event listener to stop auto scroll on manual interaction
+
   let manualScrollTimeout: NodeJS.Timeout;
   const handleManualScroll = () => {
     if (isAutoScrolling.value) {
       clearTimeout(manualScrollTimeout);
       manualScrollTimeout = setTimeout(() => {
-        // Stop auto scroll immediately on manual interaction
         stopAutoScroll();
       }, 100);
     }
   };
-  
-  // Add wheel and touch events to detect manual scrolling
+
   window.addEventListener('wheel', handleManualScroll, { passive: true });
   window.addEventListener('touchmove', handleManualScroll, { passive: true });
   window.addEventListener('keydown', (e) => {
@@ -429,8 +422,7 @@ onMounted(() => {
       stopAutoScroll();
     }
   });
-  
-  // Also stop auto scroll on manual click navigation
+
   window.addEventListener('click', (e) => {
     const target = e.target as HTMLElement;
     if (target.closest('.nav-link, .scroll-to-section')) {
@@ -441,21 +433,19 @@ onMounted(() => {
 
 onUnmounted(() => {
   cleanupAudio();
-  stopAutoScroll(); // Clean up auto scroll timeouts
+  stopAutoScroll();
 });
 
 const handleEnterInvitation = async () => {
   console.log('Entering invitation, starting music...');
   await startMusic();
   showWelcome.value = false;
-  
-  // Start auto scroll after a longer delay to let user see the first section
+
   setTimeout(() => {
     startAutoScroll();
-  }, 7000); // Increased to 7 seconds to let user appreciate the first section
+  }, 7000);
 };
 
-// Expose functions to template if needed
 defineExpose({
   startMusic,
   toggleMusic,
@@ -463,7 +453,8 @@ defineExpose({
   startAutoScroll,
   startAutoScrollFromBeginning,
   stopAutoScroll,
-  scrollToSection
+  scrollToSection,
+  scrollToTop
 });
 </script>
 
@@ -476,7 +467,6 @@ defineExpose({
       :welcomeOpacity="'1'"
       @enter-invitation="handleEnterInvitation"
     />
-    <!-- Navigation Bar - only show when not loading and not showing welcome -->
     <NavigationBar 
       v-if="!loading && !showWelcome" 
       :isPlaying="isPlaying"
@@ -485,6 +475,7 @@ defineExpose({
       :isAutoScrolling="isAutoScrolling"
       :stopAutoScroll="stopAutoScroll"
       :startAutoScroll="startAutoScroll"
+      :scrollToTop="scrollToTop"
     />
     <div v-if="!loading && !showWelcome">
       <QuotesSection id="quotes" />
@@ -494,6 +485,7 @@ defineExpose({
       <GiftSection id="gift" />
       <UcapanSection id="ucapan" />
       <SocialShareSection id="social" />
+      <AppMap id="map" />
       <FooterSection id="footer" />
     </div>
   </NuxtLayout>

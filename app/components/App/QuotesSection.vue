@@ -9,7 +9,7 @@
         Jiyanto & Nur Aini
         </h1>
         <h2 class="font-dancing text-2xl md:text-3xl lg:text-4xl font-bold mt-4 text-white/90 tracking-wide">
-        Wedding
+        Wedding Invitation
         </h2>
       </div>
 

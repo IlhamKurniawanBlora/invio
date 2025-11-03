@@ -1,9 +1,10 @@
 <template>
   <section class="py-16 text-center" ref="sectionRef">
     <div class="max-w-3xl mx-auto px-6">
-      <div class="share-content" :class="{ 'animate-in': isVisible }">
+      <div class="share-content">
         <!-- Judul -->
-        <div class="mb-8">
+        <!-- Title -->
+        <div class="mb-8 scroll-animate-fade-up">
           <h1 class="gradient-text font-great-vibes text-5xl md:text-6xl lg:text-7xl font-normal leading-tight">
             Bagikan Kebahagiaan
           </h1>
@@ -12,84 +13,42 @@
           </h2>
         </div>
 
-  <!-- Pratinjau Pesan Undangan -->
-        <div class="share-preview mb-8">
-          <h3 class="font-semibold text-lg mb-4 text-gray-800">
-            Pesan yang akan dibagikan:
-          </h3>
-          <div class="message-card">
-            <div class="text-center mb-4">
-              <div class="flex items-center justify-center mb-2">
-                <Icon name="lucide:mosque" class="w-6 h-6 text-amber-700 mr-2" />
-                <strong class="text-lg text-amber-700">Surat Undangan Pernikahan</strong>
-                <Icon name="lucide:mosque" class="w-6 h-6 text-amber-700 ml-2" />
-              </div>
-            </div>
-            
-            <div class="paper-divider"></div>
-            
-            <div class="text-center mb-4">
-              <h3 class="text-xl font-semibold text-gray-700 mb-3">Jiyanto & Nur Aini</h3>
-              
-              <div class="space-y-2 text-gray-600">
-                <div class="flex items-center justify-center">
-                  <Icon name="lucide:calendar" class="w-4 h-4 mr-2 text-amber-600" />
-                  <span>Tanggal: 07 Desember 2025</span>
-                </div>
-                <div class="flex items-center justify-center">
-                  <Icon name="lucide:clock" class="w-4 h-4 mr-2 text-amber-600" />
-                  <span>Wektu: 09:00 WIB - Selesai</span>
-                </div>
-                <div class="flex items-center justify-center">
-                  <Icon name="lucide:map-pin" class="w-4 h-4 mr-2 text-amber-600" />
-                  <span>Tempat: Di kediaman mempelai pria</span>
-                </div>
-              </div>
-            </div>
-            
-            <div class="paper-divider"></div>
-            
-            <div class="text-gray-600 leading-relaxed text-sm text-justify mb-4">
-              Dengan segala hormat dan kerendahan hati, kami memohon maaf apabila terdapat kesalahan. Kami mengundang Bapak/Ibu/Saudara/i untuk berkenan hadir dalam acara pernikahan kami, guna memberikan doa restu dan berkah kepada kedua mempelai.
-              <br /><br />
-            </div>
-            
-            <div class="paper-divider-small"></div>
-            
-            <div class="text-center">
-              <div class="flex items-center justify-center mb-2">
-                <Icon name="lucide:heart-handshake" class="w-4 h-4 mr-2 text-pink-500" />
-                <span class="text-gray-600 text-sm">Terima kasih sebesar-besarnya</span>
-              </div>
-              <div class="flex items-center justify-center text-blue-600">
-                <Icon name="lucide:link" class="w-4 h-4 mr-2" />
-                <span class="text-sm">{{ invitationUrl }}</span>
-              </div>
-            </div>
+        <!-- Share Card -->
+        <div class="share-card w-full max-w-lg mx-auto bg-gradient-to-br from-white/10 to-white/5 rounded-lg p-8 shadow-md border border-white/20 backdrop-blur-md relative overflow-hidden scroll-animate-fade-up scroll-animate-delay-1">
+          <!-- Decorative elements -->
+          <div class="absolute top-0 right-0 w-24 h-24 opacity-5">
+            <img src="/wedding.png" alt="Decoration" class="w-full h-full object-cover"/>
           </div>
-        </div>
-
-  <!-- Tombol Bagikan Sosial -->
-        <div class="share-buttons mt-4">
+          <div class="absolute bottom-0 left-0 w-20 h-20 opacity-5 transform scale-x-[-1]">
+            <img src="/wedding.png" alt="Decoration" class="w-full h-full object-cover"/>
+          </div>
           
-          <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto mb-6 justify-center">
-            <!-- WhatsApp -->
-            <button 
-              @click="shareToWhatsApp"
-              class="share-btn whatsapp-btn"
-              aria-label="Bagikan ke WhatsApp"
-            >
-              <Icon name="logos:whatsapp-icon" class="w-8 h-8" />
-            </button>
+          <div class="relative z-10">
+            <h2 class="gradient-text text-2xl md:text-3xl font-great-vibes font-normal mb-3 text-white">Bagikan Undangan</h2>
+            <p class="text-white/80 mb-6 text-base leading-relaxed">
+              Bagikan momen spesial ini bersama orang-orang terkasih
+            </p>
+            
+            <!-- Share Buttons -->
+            <div class="flex justify-center gap-4">
+              <!-- WhatsApp -->
+              <button 
+                @click="shareToWhatsApp"
+                class="share-btn whatsapp-btn"
+                aria-label="Bagikan ke WhatsApp"
+              >
+                <Icon name="logos:whatsapp-icon" class="w-6 h-6" />
+              </button>
 
-            <!-- Tombol Salin Tautan -->
-            <button 
-              @click="copyLink"
-              class="share-btn copy-btn"
-              aria-label="Salin tautan undangan"
-            >
-              <Icon name="lucide:link" class="w-8 h-8" />
-            </button>
+              <!-- Tombol Salin Tautan -->
+              <button 
+                @click="copyLink"
+                class="share-btn link-btn"
+                aria-label="Salin tautan undangan"
+              >
+                <Icon name="lucide:link" class="w-6 h-6" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -98,12 +57,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { useToastApp } from '~/composables/useToastApp'
+import { useScrollAnimation } from '~/composables/useScrollAnimation'
+
+// Scroll animation setup
+const { observe } = useScrollAnimation({
+  threshold: 0.1,
+  rootMargin: '0px 0px -100px 0px',
+  once: true,
+  stagger: 200
+})
 
 // Ref elemen
 const sectionRef = ref<HTMLElement>()
-const isVisible = ref(false)
 
 // Komposabel toast
 const { success, error } = useToastApp()
@@ -139,47 +106,18 @@ const copyLink = async () => {
   }
 }
 
-// Intersection Observer untuk animasi saat digulir
-let observer: IntersectionObserver
-
+// Lifecycle
 onMounted(() => {
-  observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.target === sectionRef.value) {
-          isVisible.value = entry.isIntersecting
-        }
-      })
-    },
-    {
-      threshold: 0.3,
-      rootMargin: '-50px'
+  nextTick(() => {
+    const shareCard = document.querySelector('.share-card')
+    if (shareCard) {
+      observe(shareCard as Element)
     }
-  )
-
-  if (sectionRef.value) {
-    observer.observe(sectionRef.value)
-  }
-})
-
-onUnmounted(() => {
-  if (observer && sectionRef.value) {
-    observer.unobserve(sectionRef.value)
-  }
+  })
 })
 </script>
 
 <style scoped>
-/* Responsive improvements for mobile */
-@media (max-width: 640px) {
-  .gradient-text {
-    font-size: 2.5rem !important;
-  }
-  .font-dancing {
-    font-size: 1.5rem !important;
-  }
-}
-
 /* Text styling */
 .gradient-text {
   background: linear-gradient(45deg, #ffffff, #f8fafc, #e2e8f0);
@@ -189,66 +127,20 @@ onUnmounted(() => {
   text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
 }
 
-/* Share Preview */
-.share-preview {
-  max-width: 500px;
-  margin: 0 auto;
+/* Scroll animation classes */
+.scroll-animate-fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.message-card {
-  background: linear-gradient(135deg, #fefefe 0%, #faf8f6 100%);
-  border-radius: 12px;
-  padding: 2rem;
-  border: 1px solid #e5e7eb;
-  box-shadow: 
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  transition: all 0.3s ease;
-  position: relative;
+.scroll-animate-fade-up.is-visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
 }
 
-.message-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 
-    0 10px 25px -3px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-}
-
-/* Paper dividers */
-.paper-divider {
-  height: 1px;
-  background: repeating-linear-gradient(
-    to right,
-    #d1d5db 0px,
-    #d1d5db 10px,
-    transparent 10px,
-    transparent 15px
-  );
-  margin: 1.5rem 0;
-  position: relative;
-}
-
-.paper-divider::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: -1px;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(to right, transparent, #e5e7eb 20%, #e5e7eb 80%, transparent);
-}
-
-.paper-divider-small {
-  height: 1px;
-  background: repeating-linear-gradient(
-    to right,
-    #e5e7eb 0px,
-    #e5e7eb 5px,
-    transparent 5px,
-    transparent 10px
-  );
-  margin: 1rem 0;
-  opacity: 0.6;
+.scroll-animate-delay-1 {
+  transition-delay: 0.2s !important;
 }
 
 /* Share Buttons */
@@ -256,8 +148,8 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -273,65 +165,44 @@ onUnmounted(() => {
 
 /* WhatsApp Button */
 .whatsapp-btn {
-  background: linear-gradient(135deg, #25d366, #128c7e);
+  background: linear-gradient(45deg, #25d366, #128c7e);
   box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
 }
 
 .whatsapp-btn:hover {
-  background: linear-gradient(135deg, #128c7e, #075e54);
+  background: linear-gradient(45deg, #128c7e, #075e54);
   box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
 }
 
-/* Copy Button */
-.copy-btn {
-  background: linear-gradient(135deg, #6366f1, #4f46e5);
+/* Link Button */
+.link-btn {
+  background: linear-gradient(45deg, #6366f1, #4f46e5);
   box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
 }
 
-.copy-btn:hover {
-  background: linear-gradient(135deg, #4f46e5, #4338ca);
+.link-btn:hover {
+  background: linear-gradient(45deg, #4f46e5, #4338ca);
   box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
 }
 
-/* Animation for scroll reveal */
-.share-content.animate-in .share-preview {
-  animation: slideInUp 0.6s ease-out 0.2s forwards;
-}
-
-.share-content.animate-in .share-buttons {
-  animation: slideInUp 0.6s ease-out 0.4s forwards;
-}
-
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Responsive */
+/* Responsive improvements for mobile */
 @media (max-width: 640px) {
-  .share-buttons .flex {
-    flex-direction: row;
-    gap: 1rem;
+  .gradient-text {
+    font-size: 2.5rem !important;
+  }
+  .font-dancing {
+    font-size: 1.5rem !important;
   }
   
   .share-btn {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
   }
-  
-  .share-btn .w-8 {
-    width: 1.5rem;
-    height: 1.5rem;
-  }
-  
-  .message-card {
-    padding: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .share-card {
+    padding: 1rem;
   }
 }
 </style>
