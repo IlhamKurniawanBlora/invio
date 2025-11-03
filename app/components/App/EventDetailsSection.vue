@@ -113,7 +113,7 @@ onMounted(() => {
                     <div class="text-left text-white/70 max-w-2xl text-sm lg:text-base leading-relaxed scroll-animate-scale scroll-animate-delay-3">
                       <p>
                         <span class="inline-block w-24">Tanggal</span>
-                        <span class="inline-block">: 23 November 2025</span>
+                        <span class="inline-block">: 07 Desember 2025</span>
                         <br>
                         <span class="inline-block w-24">Waktu</span>
                         <span class="inline-block">: 09.00 – 12.00 WIB (Ngunduh Mantu)</span>
