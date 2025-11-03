@@ -30,28 +30,16 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: 'Pernikahan Jiyanto dan Nur Aini',
+      title: 'Jiyanto & Nur Aini Wedding Invitation',
       meta: [
-        {
-          name: 'description',
-          content: 'Undangan Pernikahan Jiyanto dan Nur Aini',
-        },
-        {
-          name: 'keywords',
-          content: 'pernikahan, jiyanto, nur aini, undangan',
-        },
-      ],
-      link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { name: 'description', content: 'Undangan pernikahan Jiyanto & Nur Aini - 07 Desember 2025' },
+        { property: 'og:title', content: 'Jiyanto & Nur Aini Wedding Invitation' },
+        { property: 'og:description', content: 'Undangan pernikahan Jiyanto & Nur Aini - 07 Desember 2025' },
+        { property: 'og:image', content: 'https://undangan-pernikahan-jiyanto-nuraini.vercel.app/og-image.jpg' },
+        { property: 'og:url', content: 'https://undangan-pernikahan-jiyanto-nuraini.vercel.app/' },
+        { property: 'og:type', content: 'website' },
+        { name: 'twitter:card', content: 'summary_large_image' },
       ],
     },
-  },
-
-  seo: {
-    siteName: 'Pernikahan Jiyanto & Nur Aini',
-    siteUrl: 'https://undangan-pernikahan-jiyanto-nuraini.vercel.app',
-    description: 'Undangan pernikahan resmi Jiyanto dan Nur Aini.',
-    twitterCard: 'summary_large_image',
-    ogImage: '/og-image.png',
   },
 })
