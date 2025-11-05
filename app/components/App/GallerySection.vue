@@ -29,9 +29,9 @@
     </div>
     
     <!-- Grid Layout -->
-    <div class="grid grid-cols-1 gap-3 max-w-6xl mx-auto px-4 md:grid-cols-4 md:grid-rows-3 md:h-[500px] md:gap-4 relative z-20" ref="galleryGridRef">
-      <!-- Large image (1x1 on mobile, 2x2 on desktop) -->
-      <div class="col-span-1 row-span-1 h-screen md:col-span-2 md:row-span-2 md:h-full scroll-animate-scale scroll-animate-delay-1">
+    <div class="grid grid-cols-2 gap-3 max-w-6xl mx-auto px-4 sm:gap-3 md:grid-cols-4 md:grid-rows-3 md:h-[500px] md:gap-4 relative z-20" ref="galleryGridRef">
+      <!-- Large image (2x2 on mobile, 2x2 on desktop) -->
+      <div class="col-span-1 row-span-1 h-64 sm:h-72 md:col-span-2 md:row-span-2 md:h-full scroll-animate-scale scroll-animate-delay-1">
         <img :src="galleryImages[0].src" 
              :alt="galleryImages[0].alt"
              @click="openPreview(galleryImages[0])"
@@ -39,7 +39,7 @@
       </div>
       
       <!-- Medium image (1x1 on mobile, 1x2 on desktop) -->
-      <div class="col-span-1 row-span-1 h-screen md:col-span-1 md:row-span-2 md:h-full scroll-animate-fade-right scroll-animate-delay-2">
+      <div class="col-span-1 row-span-1 h-64 sm:h-72 md:col-span-1 md:row-span-2 md:h-full scroll-animate-fade-right scroll-animate-delay-2">
         <img :src="galleryImages[1].src" 
              :alt="galleryImages[1].alt"
              @click="openPreview(galleryImages[1])"
@@ -47,14 +47,14 @@
       </div>
       
       <!-- Small images (1x1 each) -->
-      <div class="col-span-1 row-span-1 h-screen md:col-span-1 md:row-span-1 md:h-full scroll-animate-fade-up scroll-animate-delay-3">
+      <div class="col-span-1 row-span-1 h-64 sm:h-72 md:col-span-1 md:row-span-1 md:h-full scroll-animate-fade-up scroll-animate-delay-3">
         <img :src="galleryImages[2].src" 
              :alt="galleryImages[2].alt"
              @click="openPreview(galleryImages[2])"
              class="w-full h-full object-cover rounded-lg shadow-xl cursor-pointer hover:scale-105 transition-all duration-300 hover:shadow-2xl">
       </div>
       
-      <div class="col-span-1 row-span-1 h-screen md:col-span-1 md:row-span-1 md:h-full scroll-animate-fade-up scroll-animate-delay-4">
+      <div class="col-span-1 row-span-1 h-64 sm:h-72 md:col-span-1 md:row-span-1 md:h-full scroll-animate-fade-up scroll-animate-delay-4">
         <img :src="galleryImages[3].src" 
              :alt="galleryImages[3].alt"
              @click="openPreview(galleryImages[3])"
@@ -62,7 +62,7 @@
       </div>
       
       <!-- Wide image (1x1 on mobile, 2x1 on desktop) -->
-      <div class="col-span-1 row-span-1 h-screen md:col-span-2 md:row-span-1 md:h-full scroll-animate-zoom scroll-animate-delay-2">
+      <div class="col-span-2 row-span-1 h-64 sm:h-72 md:col-span-2 md:row-span-1 md:h-full scroll-animate-zoom scroll-animate-delay-2">
         <img :src="galleryImages[4].src" 
              :alt="galleryImages[4].alt"
              @click="openPreview(galleryImages[4])"
@@ -208,7 +208,7 @@ onUnmounted(() => {
 /* Grid layout styles - Mobile first approach */
 .grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.75rem;
 }
 
@@ -346,15 +346,16 @@ button:hover {
 /* Mobile specific styles - Full height images */
 @media (max-width: 767px) {
   .grid > div {
-    height: 100vh;
+    height: auto;
+    min-height: 250px;
   }
   
   .grid {
-    gap: 1.5rem;
+    gap: 1rem;
   }
   
   .grid img {
-    border-radius: 0;
+    border-radius: 0.5rem;
   }
 }
 

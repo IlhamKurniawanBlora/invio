@@ -7,6 +7,13 @@
           <h1 class="gradient-text font-great-vibes text-5xl md:text-6xl lg:text-7xl font-normal leading-tight">
             Ucapan & Doa
           </h1>
+          <div class="flex items-center justify-center scroll-animate-fade-up scroll-animate-delay-2">
+            <div class="h-px bg-gradient-to-r from-transparent via-white/40 to-transparent w-24"></div>
+            <div class="mx-6 text-white/80">
+              <i class="fas fa-heart heart-beat text-xl"></i>
+            </div>
+            <div class="h-px bg-gradient-to-r from-transparent via-white/40 to-transparent w-24"></div>
+          </div>
           <h2 class="font-dancing text-2xl md:text-3xl lg:text-4xl font-bold mt-4 text-white/90 tracking-wide">
             "Doa terbaik dari hati tulus untuk kedua mempelai"
           </h2>
@@ -17,18 +24,25 @@
           <blockquote class="text-lg text-white/90 leading-relaxed italic mb-4 arabic-text scroll-animate-fade-up scroll-animate-delay-1">
             "رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا"
           </blockquote>
-          
-          <div class="paper-divider"></div>
-          
-          <p class="text-white/80 mb-6 scroll-animate-fade-up scroll-animate-delay-2">
-            "Ya Tuhan kami, anugerahkanlah kepada kami pasangan hidup dan keturunan yang menyejukkan mata, 
-            dan jadikanlah kami sebagai imam (pemimpin yang baik) bagi orang-orang yang bertakwa."
-          </p>
-          
-          <div class="paper-divider"></div>
-        
-          
-          <div class="text-left space-y-6">
+              
+          <div class="bg-gradient-to-br from-white/10 to-white/5 rounded-lg p-8 shadow-md border border-white/20 backdrop-blur-md relative overflow-hidden scroll-animate-fade-up scroll-animate-delay-1">
+            <!-- Decorative elements -->
+            <div class="absolute top-0 right-0 w-24 h-24 opacity-5">
+              <img src="/wedding.png" alt="Decoration" class="w-full h-full object-cover"/>
+            </div>
+            <div class="absolute bottom-0 left-0 w-20 h-20 opacity-5 transform scale-x-[-1]">
+              <img src="/wedding.png" alt="Decoration" class="w-full h-full object-cover"/>
+            </div>
+            
+            <div class="relative z-10">
+              <p class="text-white/80 text-lg leading-relaxed italic">
+                "Ya Tuhan kami, anugerahkanlah kepada kami pasangan hidup dan keturunan yang menyejukkan mata, 
+                dan jadikanlah kami sebagai imam (pemimpin yang baik) bagi orang-orang yang bertakwa."
+              </p>
+            </div>
+          </div>
+
+          <div class="text-left space-y-6 pt-6">
             <div class="doa-item scroll-animate-fade-left scroll-animate-delay-2">
               <h4 class="font-semibold text-white/90 mb-1">
                 <i class="fas fa-heart text-pink-500 mr-2"></i>

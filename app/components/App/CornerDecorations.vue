@@ -2,22 +2,22 @@
   <div class="corner-decorations">
     <!-- Top Left -->
     <div class="absolute top-8 left-8 z-20 corner-decoration fade-in-corner-tl">
-      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-20 h-20 opacity-60" />
+      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-32 h-32" />
     </div>
     
     <!-- Top Right -->
     <div class="absolute top-8 right-8 z-20 corner-decoration fade-in-corner-tr">
-      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-20 h-20 opacity-60 transform scaleX(-1) -rotate-90" />
+      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-32 h-32 transform scaleX(-1) -rotate-90" />
     </div>
     
     <!-- Bottom Left -->
     <div class="absolute bottom-8 left-8 z-20 corner-decoration fade-in-corner-bl">
-      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-20 h-20 opacity-60 transform rotate-270" />
+      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-32 h-32 transform rotate-270" />
     </div>
     
     <!-- Bottom Right -->
     <div class="absolute bottom-8 right-8 z-20 corner-decoration fade-in-corner-br">
-      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-20 h-20 opacity-60 transform rotate-180 scaleX(-1)" />
+      <img src="/assets/images/angeldecor.png" alt="Angel Decoration" class="w-32 h-32 transform rotate-180 scaleX(-1)" />
     </div>
   </div>
 </template>

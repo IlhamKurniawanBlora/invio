@@ -118,7 +118,6 @@ const tryFallbackSources = () => {
 const startMusic = async () => {
   if (!isAudioInitialized.value) {
     initializeAudio();
-    await new Promise(resolve => setTimeout(resolve, 500));
   }
   
   if (!audioPlayer.value) {
@@ -190,6 +189,7 @@ const getSections = () => {
     'gift',
     'ucapan',
     'social',
+    'map',
     'footer'
   ];
 };
@@ -443,7 +443,7 @@ const handleEnterInvitation = async () => {
 
   setTimeout(() => {
     startAutoScroll();
-  }, 7000);
+  }, 2000);
 };
 
 defineExpose({

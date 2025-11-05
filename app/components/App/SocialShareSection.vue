@@ -8,9 +8,17 @@
           <h1 class="gradient-text font-great-vibes text-5xl md:text-6xl lg:text-7xl font-normal leading-tight">
             Bagikan Kebahagiaan
           </h1>
+          <div class="flex items-center justify-center scroll-animate-fade-up scroll-animate-delay-2">
+          <div class="h-px bg-gradient-to-r from-transparent via-white/40 to-transparent w-24"></div>
+          <div class="mx-6 text-white/80">
+            <i class="fas fa-heart heart-beat text-xl"></i>
+          </div>
+          <div class="h-px bg-gradient-to-r from-transparent via-white/40 to-transparent w-24"></div>
+        </div>
           <h2 class="font-dancing text-2xl md:text-3xl lg:text-4xl font-bold mt-4 text-white/90 tracking-wide">
             "Berbagi momen indah bersama orang-orang tercinta"
           </h2>
+          
         </div>
 
         <!-- Share Card -->

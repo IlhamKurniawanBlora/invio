@@ -1,7 +1,7 @@
 <template>
   <div 
     v-if="showLoading"
-    class="fixed top-0 left-0 w-screen h-screen min-h-screen min-w-full bg-gradient-to-br from-gray-900 via-gray-800 to-black flex justify-center items-center z-[55] overflow-hidden transition-opacity duration-1000"
+    class="fixed top-0 left-0 w-screen h-screen min-h-screen min-w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex justify-center items-center z-[55] overflow-hidden transition-opacity duration-1000"
     :class="{ 'opacity-0 pointer-events-none': !showLoading }"
     style="inset:0;"
   >
@@ -17,22 +17,22 @@
       </div>
       
       <!-- Main Names -->
-      <div class="font-vibes text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.6)] mb-4 leading-tight">
+      <div class="font-vibes text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold drop-shadow-[0_0_30px_rgba(255,255,255,0.6)] mb-4 leading-tight">
         <span 
           ref="jiyantoRef" 
-          class="relative inline-block opacity-0 text-part transition-all duration-1000 ease-out transform translate-y-8"
+          class="relative inline-block opacity-0 text-part transition-all duration-1000 ease-out transform translate-y-8 bg-gradient-to-r from-white via-slate-100 to-slate-200 bg-clip-text text-transparent"
           :class="{ 'animate-show': showJiyanto }"
         >
           Jiyanto
         </span>
         <span 
-          class="mx-2 sm:mx-4 transition-all duration-500 ease-out transform scale-0 animate-show-ampersand"
+          class="mx-2 sm:mx-4 transition-all duration-500 ease-out transform scale-0 animate-show-ampersand text-white"
         >
           &
         </span>
         <span 
           ref="nurainiRef" 
-          class="relative inline-block opacity-0 text-part transition-all duration-1000 ease-out transform translate-y-8"
+          class="relative inline-block opacity-0 text-part transition-all duration-1000 ease-out transform translate-y-8 bg-gradient-to-r from-white via-slate-100 to-slate-200 bg-clip-text text-transparent"
           :class="{ 'animate-show': showNuraini }"
         >
           Nur Aini
@@ -49,18 +49,18 @@
       
       <!-- Loading Progress Bar -->
       <div 
-        class="w-64 h-1 bg-white/20 rounded-full mx-auto mb-4 overflow-hidden opacity-0"
+        class="w-64 h-1 bg-white/20 rounded-full mx-auto mb-4 overflow-hidden opacity-0 backdrop-blur-sm"
         :class="{ 'animate-fade-in': showProgress }"
       >
         <div 
-          class="h-full bg-gradient-to-r from-slate-400 to-slate-200 rounded-full transition-all duration-300 ease-out"
+          class="h-full bg-gradient-to-r from-slate-400 via-slate-200 to-slate-400 rounded-full transition-all duration-300 ease-out shadow-lg shadow-slate-300/50"
           :style="{ width: loadingProgress + '%' }"
         ></div>
       </div>
       
       <!-- Loading Text -->
       <div 
-        class="text-white/60 text-sm font-dancing opacity-0"
+        class="text-white/70 text-sm font-dancing opacity-0 tracking-wide"
         :class="{ 'animate-fade-in': showProgress }"
       >
         Loading... {{ Math.round(loadingProgress) }}%
@@ -122,7 +122,7 @@ const sparkles = reactive(Array.from({ length: 18 }, (_, index) => {
       width: size + 'px',
       height: size + 'px',
       fontSize: size + 'px',
-      color: `hsl(${Math.random() * 60 + 300}, 70%, 80%)`, // Purple to pink hues
+      color: `hsl(${Math.random() * 40 + 200}, 100%, 80%)`, // Soft blue to purple hues for wedding theme
       animationDelay: delay + 's',
       animationDuration: duration + 's',
       '--drift-x': drift + 'px',
@@ -231,7 +231,7 @@ watch(showLoading, (val) => {
   left: 0;
   width: 0;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
   z-index: 1;
   border-radius: 4px;
 }
@@ -242,7 +242,7 @@ watch(showLoading, (val) => {
 }
 
 .text-part.animate-show::before {
-  animation: handwriting 2s ease-in-out 0.3s forwards;
+  animation: shimmer 2s ease-in-out 0.3s forwards;
 }
 
 .ampersand.animate-show-ampersand {
@@ -262,10 +262,11 @@ watch(showLoading, (val) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 70%, transparent 100%);
-  border: 1px solid rgba(255,255,255,0.2);
-  backdrop-filter: blur(2px);
-  text-shadow: 0 0 10px currentColor;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 70%, transparent 100%);
+  border: 1px solid rgba(255,255,255,0.25);
+  backdrop-filter: blur(3px);
+  text-shadow: 0 0 12px currentColor;
+  box-shadow: 0 0 15px rgba(255,255,255,0.1);
 }
 
 @keyframes bubble-rise {
@@ -300,7 +301,7 @@ watch(showLoading, (val) => {
 }
 
 /* Keyframe Animations */
-@keyframes handwriting {
+@keyframes shimmer {
   0% { 
     width: 0; 
     opacity: 0.7;

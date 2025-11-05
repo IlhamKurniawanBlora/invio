@@ -1,5 +1,5 @@
 <template>
-  <section id="gift" class="py-16 text-center min-h-screen relative overflow-hidden flex items-center justify-center" ref="sectionRef">
+  <section id="gift" class="pt-16 text-center min-h-screen relative overflow-hidden flex items-center justify-center" ref="sectionRef">
     <div class="max-w-4xl mx-auto px-6 relative z-30">
       <div class="gift-content">
         <!-- Title -->
@@ -97,12 +97,6 @@
           <p class="text-white/80 italic max-w-xl mx-auto font-playfair text-lg">
             "Terima kasih atas doa dan hadiah yang diberikan"
           </p>
-        </div>
-
-        <!-- Divider Images -->
-        <div class="scroll-animate-fade-up scroll-animate-delay-3 flex items-center justify-center gap-8 md:gap-12" ref="dividerRef">
-          <img src="/assets/images/divider.png" alt="Divider Left" class="w-32 opacity-60" />
-            <img src="/assets/images/divider.png" alt="Divider Right" class="w-32 opacity-60 transform scale-x-[-1]" />
         </div>
       </div>
     </div>
