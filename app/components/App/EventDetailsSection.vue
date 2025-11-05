@@ -116,7 +116,7 @@ onMounted(() => {
                         <span class="inline-block">: 07 Desember 2025</span>
                         <br>
                         <span class="inline-block w-24">Waktu</span>
-                        <span class="inline-block">: 09.00 – 12.00 WIB (Ngunduh Mantu)</span>
+                        <span class="inline-block">: 09.00 WIB – Selesai (Ngunduh Mantu)</span>
                         <br>
                         <span class="inline-block w-24">Lokasi</span>
                         <span class="inline-block">: Dukuh Klompok, Desa Tanjung, RT 01 RW 03, Kedungtuban, Blora</span>
